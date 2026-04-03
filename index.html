@@ -10,9 +10,9 @@
         :root {
             --accent: #d1ff00;
             --purple: #7e22ce;
+            --rush-cyan: #00f3ff;
         }
         
-        /* HIDDEN CURSOR ONLY ON DESKTOP */
         @media (min-width: 1024px) {
             * { cursor: none !important; }
         }
@@ -23,7 +23,6 @@
             color: #d1d5db;
             margin: 0;
             padding: 0;
-            /* FORCING SCROLL TO BE ACTIVE */
             overflow-y: auto !important; 
             overflow-x: hidden;
             height: auto;
@@ -42,6 +41,12 @@
             border-color: rgba(209, 255, 0, 0.3); 
             background: rgba(20, 20, 20, 0.8);
             transform: translateY(-4px);
+        }
+
+        /* Beatrush Specific Hover */
+        .beatrush-card:hover {
+            border-color: var(--rush-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
         }
 
         .bg-mesh {
@@ -79,7 +84,6 @@
             -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.3);
         }
 
-        /* SIMPLE CSS FADE IN (NO JS REQUIRED FOR VISIBILITY) */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -165,15 +169,35 @@
 
             <div id="work" class="space-y-12">
                 <div class="reveal flex justify-between items-end border-b border-white/10 pb-6" style="animation-delay: 0.5s;">
-                    <h3 class="text-2xl font-bold text-white uppercase tracking-widest">Initial Builds</h3>
-                    <span class="mono text-[10px] text-gray-500">BOOTING_WORKS[]</span>
+                    <h3 class="text-2xl font-bold text-white uppercase tracking-widest">Active Projects</h3>
+                    <span class="mono text-[10px] text-gray-500">V8_STREAMS[]</span>
                 </div>
 
-                <div class="reveal glass border-dashed border-2 border-white/5 p-32 rounded-[2.5rem] text-center group cursor-pointer" style="animation-delay: 0.6s;">
-                    <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-[#d1ff00]/20 transition-all">
-                        <svg class="w-6 h-6 text-gray-500 group-hover:text-[#d1ff00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                <a href="beathrush.html" class="reveal glass beatrush-card block p-8 md:p-12 rounded-[2.5rem] group relative overflow-hidden" style="animation-delay: 0.6s;">
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                        <div>
+                            <div class="mono text-[10px] text-[#00f3ff] uppercase tracking-[0.4em] mb-4">// System Engine</div>
+                            <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#00f3ff] transition-colors">
+                                BEATRUSH <span class="opacity-50">V8_CORE</span>
+                            </h4>
+                            <p class="mt-4 text-gray-400 max-w-xl text-sm md:text-base leading-relaxed">
+                                A brutalist broadcast terminal built with Laravel & Inertia.js. Real-time track metadata, CRT overlays, and zero-latency UI.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="w-12 h-12 rounded-full border border-[#00f3ff]/30 flex items-center justify-center group-hover:bg-[#00f3ff] group-hover:text-black transition-all">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </div>
+                            <span class="mono text-[9px] text-gray-600 mt-4 uppercase tracking-widest">Open Terminal</span>
+                        </div>
                     </div>
-                    <p class="mono text-gray-500 uppercase tracking-widest text-xs group-hover:text-white transition-colors">Project Deployment in Progress</p>
+                    <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <span class="mono text-8xl font-bold">V8</span>
+                    </div>
+                </a>
+
+                <div class="reveal glass border-dashed border-2 border-white/5 p-20 rounded-[2.5rem] text-center group cursor-wait" style="animation-delay: 0.7s;">
+                    <p class="mono text-gray-600 uppercase tracking-widest text-xs">More Deployments Pending...</p>
                 </div>
             </div>
         </main>
@@ -187,7 +211,6 @@
     </div>
 
     <script>
-        // Custom Cursor Movement
         const dot = document.getElementById('cursor-dot');
         const glow = document.getElementById('cursor-glow');
         
@@ -195,14 +218,12 @@
             dot.style.left = e.clientX + 'px';
             dot.style.top = e.clientY + 'px';
             
-            // Using a slight delay for the glow for a "liquid" feel
             setTimeout(() => {
                 glow.style.left = e.clientX + 'px';
                 glow.style.top = e.clientY + 'px';
             }, 50);
         });
 
-        // Scroll Progress Bar
         window.addEventListener('scroll', () => {
             const winScroll = document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
