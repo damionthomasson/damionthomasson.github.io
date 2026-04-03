@@ -53,9 +53,17 @@
             background: rgba(15, 15, 15, 0.9);
             border-left: 2px solid var(--rush-fuchsia);
         }
+
+        .hero-zoom {
+            transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.7s ease;
+        }
+        .terminal-border:hover .hero-zoom {
+            transform: scale(1.05);
+            opacity: 1;
+        }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-4 md:p-10 selection:bg-[#ff00ff] selection:text-white">
 
     <header class="max-w-7xl mx-auto flex justify-between items-start mb-16">
         <div>
@@ -67,18 +75,18 @@
         </div>
         <div class="hidden md:block text-right">
             <span class="block text-[10px] text-white/40 uppercase">Production Status</span>
-            <span class="block text-[10px] fuchsia-text">LIVE_ON_NETWORK</span>
+            <span class="block text-[10px] fuchsia-text animate-pulse">LIVE_ON_NETWORK</span>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
         
         <div class="lg:col-span-7">
-            <div class="terminal-border bracket bracket-tl p-1 mb-10 overflow-hidden">
+            <div class="terminal-border bracket bracket-tl p-1 mb-10 overflow-hidden bg-zinc-900">
                 <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200" 
-                     alt="Chloe Portfolio Preview" 
-                     class="w-full opacity-60 hover:opacity-100 transition-opacity duration-700">
-                <div class="absolute top-4 right-4 bg-black/80 px-3 py-1 border border-white/10 text-[9px] uppercase tracking-widest">
+                     alt="Chloe Art Production Preview" 
+                     class="hero-zoom w-full h-[400px] object-cover opacity-70">
+                <div class="absolute top-4 right-4 bg-black/80 px-3 py-1 border border-white/10 text-[9px] uppercase tracking-widest z-10">
                     UI_Capture_V1.0
                 </div>
             </div>
@@ -96,16 +104,16 @@
             <div class="terminal-border p-6 bg-white/5">
                 <h3 class="text-[10px] font-bold text-fuchsia-500 uppercase tracking-[0.4em] mb-6 border-b border-white/10 pb-2">Technical Execution</h3>
                 <div class="space-y-6">
-                    <div>
-                        <span class="text-white text-xs font-bold block mb-1">Dynamic Grid Engine</span>
+                    <div class="group">
+                        <span class="text-white text-xs font-bold block mb-1 group-hover:text-fuchsia-400 transition-colors">Dynamic Grid Engine</span>
                         <p class="text-[11px] text-gray-500">CSS Grid with auto-fill logic for seamless 4K to Mobile scaling.</p>
                     </div>
-                    <div>
-                        <span class="text-white text-xs font-bold block mb-1">Custom Lightbox Module</span>
+                    <div class="group">
+                        <span class="text-white text-xs font-bold block mb-1 group-hover:text-fuchsia-400 transition-colors">Custom Lightbox Module</span>
                         <p class="text-[11px] text-gray-500">Vanilla JavaScript module for distraction-free artwork inspection.</p>
                     </div>
-                    <div>
-                        <span class="text-white text-xs font-bold block mb-1">Communication Funnel</span>
+                    <div class="group">
+                        <span class="text-white text-xs font-bold block mb-1 group-hover:text-fuchsia-400 transition-colors">Communication Funnel</span>
                         <p class="text-[11px] text-gray-500">Gmail Compose API + Discord Community bridge for streamlined commissions.</p>
                     </div>
                 </div>
@@ -113,11 +121,11 @@
 
             <div class="terminal-border p-6 bracket bracket-br">
                 <h3 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.4em] mb-4">Tech_Stack</h3>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-white/10 px-3 py-1 text-[9px] text-white font-bold border border-white/10">HTML5_SEMANTIC</span>
-                    <span class="bg-white/10 px-3 py-1 text-[9px] text-white font-bold border border-white/10">CSS3_GRID</span>
-                    <span class="bg-white/10 px-3 py-1 text-[9px] text-white font-bold border border-white/10">VANILLA_JS</span>
-                    <span class="bg-white/10 px-3 py-1 text-[9px] text-white font-bold border border-white/10">DOM_MANIPULATION</span>
+                <div class="flex flex-wrap gap-2 text-[#fff]">
+                    <span class="bg-white/5 px-3 py-1 text-[9px] font-bold border border-white/10 hover:bg-fuchsia-500/20 hover:border-fuchsia-500 transition-all cursor-default">HTML5_SEMANTIC</span>
+                    <span class="bg-white/5 px-3 py-1 text-[9px] font-bold border border-white/10 hover:bg-fuchsia-500/20 hover:border-fuchsia-500 transition-all cursor-default">CSS3_GRID</span>
+                    <span class="bg-white/5 px-3 py-1 text-[9px] font-bold border border-white/10 hover:bg-fuchsia-500/20 hover:border-fuchsia-500 transition-all cursor-default">VANILLA_JS</span>
+                    <span class="bg-white/5 px-3 py-1 text-[9px] font-bold border border-white/10 hover:bg-fuchsia-500/20 hover:border-fuchsia-500 transition-all cursor-default">DOM_MANIPULATION</span>
                 </div>
             </div>
         </div>
@@ -129,12 +137,12 @@
                     <div class="text-2xl font-bold text-white tracking-tighter mb-2">99% LIGHTSPEED</div>
                     <p class="text-[10px] opacity-50 uppercase">Zero external libraries used to maintain lightning-fast load times.</p>
                 </div>
-                <div class="code-window p-8">
+                <div class="code-window p-8 border-l-0 md:border-l-2">
                     <div class="text-[9px] fuchsia-text mb-2">// UX_STRATEGY</div>
                     <div class="text-2xl font-bold text-white tracking-tighter mb-2">SMOOTH_FLOW</div>
                     <p class="text-[10px] opacity-50 uppercase">Single-page architecture with custom anchor point navigation.</p>
                 </div>
-                <div class="code-window p-8">
+                <div class="code-window p-8 border-l-0 md:border-l-2">
                     <div class="text-[9px] fuchsia-text mb-2">// ACCESSIBILITY</div>
                     <div class="text-2xl font-bold text-white tracking-tighter mb-2">SEO_READY</div>
                     <p class="text-[10px] opacity-50 uppercase">Fully semantic structure for search engine optimization.</p>
@@ -145,7 +153,11 @@
 
     <footer class="max-w-7xl mx-auto mt-20 py-10 border-t border-white/5 flex flex-wrap justify-between items-center opacity-40">
         <div class="text-[9px] uppercase tracking-[0.5em]">Dev: Damion Thomasson // Build_2026</div>
-        <a href="#" class="text-[10px] font-bold border-b border-white/20 hover:border-fuchsia-500 transition-colors">INITIALIZE_LIVE_PREVIEW</a>
+        <a href="https://damionthomasson.github.io/chloes_art/" 
+           target="_blank" 
+           class="text-[10px] font-bold border-b border-white/20 hover:border-fuchsia-500 hover:text-fuchsia-500 transition-all">
+           INITIALIZE_LIVE_PREVIEW [↗]
+        </a>
     </footer>
 
 </body>
