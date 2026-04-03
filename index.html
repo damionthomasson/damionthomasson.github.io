@@ -8,11 +8,12 @@
     
     <style>
         :root {
-            --bg: #050505;
+            --bg: #0a0a0a;
             --text: #ffffff;
             --accent: #d1ff00; 
-            --sub: #888888;
-            --border: rgba(255, 255, 255, 0.12);
+            --sub: #aaaaaa;
+            --grid-color: rgba(209, 255, 0, 0.15); /* Brightened the grid */
+            --glow-color: rgba(209, 255, 0, 0.2);  /* Brightened the glow */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -21,58 +22,65 @@
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* --- THE BACKGROUND (CRANKED UP INTENSITY) --- */
-        .bg-wrapper {
+        /* --- THE HIGH-CONTRAST BACKGROUND --- */
+        .bg-layer {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
-            overflow: hidden;
-            background: #000;
+            background: #080808;
         }
 
-        /* Moving Glow 1 */
-        .glow-1 {
+        /* Visible Moving Aurora */
+        .aurora {
             position: absolute;
-            top: -10%; left: -10%;
+            top: -20%; left: -10%;
+            width: 70vw; height: 70vw;
+            background: radial-gradient(circle, var(--glow-color) 0%, transparent 60%);
+            filter: blur(60px);
+            animation: drift 15s infinite alternate;
+        }
+
+        .aurora-2 {
+            position: absolute;
+            bottom: -20%; right: -10%;
             width: 60vw; height: 60vw;
-            background: radial-gradient(circle, rgba(209, 255, 0, 0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: move 20s infinite alternate;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, transparent 60%);
+            filter: blur(60px);
+            animation: drift 20s infinite alternate-reverse;
         }
 
-        /* Moving Glow 2 */
-        .glow-2 {
+        /* Visible Noise Texture */
+        .noise {
             position: absolute;
-            bottom: -10%; right: -10%;
-            width: 50vw; height: 50vw;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: move 25s infinite alternate-reverse;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.04;
+            pointer-events: none;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
         }
 
-        @keyframes move {
-            from { transform: translate(0, 0); }
-            to { transform: translate(20%, 20%); }
-        }
-
-        /* High-Visibility Grid */
-        .grid-overlay {
+        /* Very Visible Grid */
+        .grid {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
             background-image: 
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 50px 50px;
-            mask-image: radial-gradient(circle at center, black, transparent 95%);
-            -webkit-mask-image: radial-gradient(circle at center, black, transparent 95%);
-            opacity: 0.3;
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at 50% 50%, white, transparent 85%);
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, white, transparent 85%);
+            opacity: 0.6; /* Pushed opacity way up */
+        }
+
+        @keyframes drift {
+            from { transform: translate(0, 0) rotate(0deg); }
+            to { transform: translate(10%, 10%) rotate(10deg); }
         }
 
         /* --- UI ELEMENTS --- */
@@ -81,86 +89,50 @@
             top: 30px; left: 50%;
             transform: translateX(-50%);
             z-index: 100;
-            background: rgba(15, 15, 15, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            padding: 12px 30px;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid var(--grid-color);
+            padding: 10px 25px;
             border-radius: 100px;
-            display: flex; gap: 40px;
+            display: flex; gap: 30px;
         }
-        nav a {
-            color: var(--sub); text-decoration: none; font-size: 0.75rem;
-            text-transform: uppercase; letter-spacing: 2px; font-weight: 700; transition: 0.3s;
-        }
-        nav a:hover { color: var(--accent); }
+        nav a { color: #fff; text-decoration: none; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
 
         .hero {
             height: 100vh;
             display: flex; flex-direction: column;
             justify-content: center; padding: 0 10%;
-            position: relative;
         }
-
-        .mono { 
-            font-family: 'JetBrains Mono', monospace; color: var(--accent); 
-            font-size: 0.8rem; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;
-        }
-        
-        .mono::before { content: ""; width: 30px; height: 1px; background: var(--accent); }
 
         h1 {
-            font-size: clamp(3rem, 15vw, 9rem);
-            line-height: 0.8; letter-spacing: -0.06em; font-weight: 900;
-            margin-bottom: 40px; text-transform: uppercase;
+            font-size: clamp(3rem, 12vw, 9rem);
+            line-height: 0.8; font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .outline { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.3); }
+        .outline { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.4); }
 
         .hero p {
-            font-size: 1.2rem; color: var(--sub); max-width: 500px; line-height: 1.6;
-            border-left: 3px solid var(--accent); padding-left: 25px;
+            font-size: 1.3rem; color: var(--sub); max-width: 550px;
+            border-left: 4px solid var(--accent); padding-left: 20px;
         }
-
-        .section-label { 
-            padding: 150px 10% 40px; display: flex; justify-content: space-between; 
-            align-items: center; border-bottom: 1px solid var(--border); margin-bottom: 100px;
-        }
-
-        .project-card {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 100px;
-            padding: 0 10%; margin-bottom: 200px; align-items: center;
-        }
-
-        .project-img {
-            background: rgba(255,255,255,0.03); aspect-ratio: 16/10;
-            border-radius: 24px; border: 1px solid var(--border);
-            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .project-card:hover .project-img { border-color: var(--accent); transform: translateY(-10px); }
-
-        h2 { font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; letter-spacing: -2px; }
 
         .btn {
-            display: inline-block; padding: 15px 35px; border: 1px solid #fff;
-            color: #fff; text-decoration: none; font-weight: bold; margin-top: 30px;
-            text-transform: uppercase; font-size: 0.8rem; transition: 0.3s;
-        }
-        .btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
-
-        @media (max-width: 900px) {
-            .project-card { grid-template-columns: 1fr; gap: 40px; }
-            h1 { font-size: 4rem; }
+            margin-top: 40px;
+            display: inline-block; padding: 15px 40px;
+            background: var(--accent); color: #000;
+            text-decoration: none; font-weight: 900;
+            text-transform: uppercase; border-radius: 5px;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-wrapper">
-        <div class="glow-1"></div>
-        <div class="glow-2"></div>
-        <div class="grid-overlay"></div>
+    <div class="bg-layer">
+        <div class="aurora"></div>
+        <div class="aurora-2"></div>
+        <div class="grid"></div>
+        <div class="noise"></div>
     </div>
 
     <nav>
@@ -170,23 +142,10 @@
     </nav>
 
     <section class="hero">
-        <div class="mono">STATUS: ACTIVE // PORTFOLIO 2026</div>
+        <div style="font-family: 'JetBrains Mono'; color: var(--accent); margin-bottom: 10px;">// SYSTEM_READY</div>
         <h1>DAMION<br><span class="outline">THOMASSON</span></h1>
-        <p>Full-stack developer building high-fidelity digital experiences. Architecting code that performs as well as it looks.</p>
-    </section>
-
-    <div class="section-label" id="work">
-        <span class="mono">PROJECTS</span>
-        <span class="mono">01 - 02</span>
-    </div>
-
-    <section class="project-card">
-        <div class="project-img"></div>
-        <div class="project-info">
-            <h2>TITAN CORE</h2>
-            <p style="color: var(--sub); margin-top: 20px;">A performance-first design system for the modern web.</p>
-            <a href="#" class="btn">View Details</a>
-        </div>
+        <p>Full-stack developer building high-fidelity digital experiences. Code that performs, design that hits.</p>
+        <div><a href="#work" class="btn">View My Work</a></div>
     </section>
 
 </body>
