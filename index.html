@@ -13,10 +13,10 @@
             --accent: #d1ff00; /* Neon Lime */
             --sub: #888888;
             --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg);
@@ -24,6 +24,38 @@
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- THE EPIC BACKGROUND --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            /* Deep Mesh Gradient */
+            background: 
+                radial-gradient(circle at 15% 25%, rgba(209, 255, 0, 0.04) 0%, transparent 35%),
+                radial-gradient(circle at 85% 75%, rgba(0, 242, 255, 0.03) 0%, transparent 35%),
+                #050505;
+            z-index: -2;
+        }
+
+        /* The Grid Overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black, transparent 90%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black, transparent 90%);
+            opacity: 0.15;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* --- Navigation --- */
@@ -33,25 +65,25 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             padding: 12px 30px;
             border-radius: 100px;
             display: flex;
             gap: 40px;
-            transition: 0.3s;
         }
         nav a {
             color: var(--sub);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             font-weight: 700;
             transition: 0.3s;
         }
-        nav a:hover { color: var(--accent); }
+        nav a:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
 
         /* --- Hero Section --- */
         .hero {
@@ -62,35 +94,58 @@
             padding: 0 10%;
         }
 
-        .mono { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.9rem; margin-bottom: 20px; }
+        .mono { 
+            font-family: 'JetBrains Mono', monospace; 
+            color: var(--accent); 
+            font-size: 0.8rem; 
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .mono::before { content: ""; width: 20px; height: 1px; background: var(--accent); }
 
         h1 {
-            font-size: clamp(3rem, 12vw, 8rem);
-            line-height: 0.85;
-            letter-spacing: -0.05em;
+            font-size: clamp(3.5rem, 15vw, 9.5rem);
+            line-height: 0.8;
+            letter-spacing: -0.06em;
             font-weight: 900;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
         }
 
-        .highlight { color: transparent; -webkit-text-stroke: 1px var(--sub); }
+        .outline { 
+            color: transparent; 
+            -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); 
+        }
 
         .hero p {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: var(--sub);
-            max-width: 600px;
-            line-height: 1.4;
+            max-width: 500px;
+            line-height: 1.6;
+            border-left: 2px solid var(--accent);
+            padding-left: 25px;
         }
 
-        /* --- Projects Grid (Modern Alternating) --- */
-        .section-label { padding: 100px 10% 20px; border-bottom: 1px solid var(--border); margin-bottom: 50px; display: flex; justify-content: space-between; align-items: flex-end;}
+        /* --- Projects Section --- */
+        .section-label { 
+            padding: 150px 10% 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 100px;
+        }
 
         .projects { padding: 0 10%; }
 
         .project-card {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 60px;
-            margin-bottom: 150px;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            margin-bottom: 250px;
             align-items: center;
         }
 
@@ -98,46 +153,55 @@
         .project-card:nth-child(even) .project-info { direction: ltr; }
 
         .project-img {
-            background: #111;
+            background: linear-gradient(45deg, #0d0d0d, #1a1a1a);
             aspect-ratio: 16/10;
-            border-radius: 12px;
+            border-radius: 24px;
             border: 1px solid var(--border);
-            overflow: hidden;
-            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 40px 80px -15px rgba(0,0,0,0.6);
         }
 
-        .project-card:hover .project-img { transform: scale(0.98); border-color: var(--accent); }
+        .project-card:hover .project-img { 
+            transform: translateY(-15px) scale(1.03); 
+            border-color: var(--accent);
+            box-shadow: 0 0 40px rgba(209, 255, 0, 0.1);
+        }
 
-        .project-info h2 { font-size: 3rem; margin-bottom: 20px; letter-spacing: -2px; }
-        .project-info p { color: var(--sub); line-height: 1.6; margin-bottom: 30px; }
+        .project-info h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 25px; letter-spacing: -3px; font-weight: 900; }
+        
+        .project-info p { color: var(--sub); line-height: 1.8; margin-bottom: 40px; font-size: 1.1rem; }
 
         .btn {
             display: inline-block;
-            padding: 12px 24px;
+            padding: 18px 40px;
+            background: transparent;
             border: 1px solid var(--text);
             color: var(--text);
             text-decoration: none;
-            border-radius: 4px;
-            font-size: 0.9rem;
             font-weight: bold;
-            transition: 0.3s;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.4s;
         }
-        .btn:hover { background: var(--text); color: #000; }
+
+        .btn:hover { background: var(--accent); border-color: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
 
         /* --- Footer --- */
         footer {
-            padding: 100px 10%;
-            background: #050505;
+            padding: 150px 10%;
             text-align: center;
+            border-top: 1px solid var(--border);
+            background: rgba(0,0,0,0.4);
         }
 
-        .footer-cta { font-size: 4rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 40px; }
+        .footer-cta { font-size: clamp(3rem, 10vw, 6rem); font-weight: 900; letter-spacing: -4px; margin-bottom: 20px; text-transform: uppercase;}
 
-        /* Mobile */
         @media (max-width: 900px) {
-            .project-card { grid-template-columns: 1fr; gap: 30px; }
-            h1 { font-size: 4rem; }
-            nav { width: 90%; gap: 20px; justify-content: center; }
+            .project-card { grid-template-columns: 1fr; gap: 40px; margin-bottom: 150px;}
+            nav { width: 90%; gap: 15px; top: 15px; }
+            h1 { margin-bottom: 20px; }
+            .section-label { padding-top: 100px; }
         }
     </style>
 </head>
@@ -149,43 +213,45 @@
         <a href="#contact">Contact</a>
     </nav>
 
-    <section class="hero">
-        <div class="mono">VER: 2026.04 // FULL-STACK</div>
-        <h1>DAMION<br><span class="highlight">THOMASSON</span></h1>
-        <p>A digital craftsman focused on high-performance web applications and aggressive minimalist design.</p>
-    </section>
+    <main>
+        <section class="hero">
+            <div class="mono">SYSTEM_STATUS: ONLINE // 2026</div>
+            <h1>DAMION<br><span class="outline">THOMASSON</span></h1>
+            <p>Full-stack developer building high-fidelity digital experiences. Architecting code that performs as well as it looks.</p>
+        </section>
 
-    <div class="section-label" id="work">
-        <span class="mono">SELECTED_WORKS</span>
-        <span class="mono">01 — 03</span>
-    </div>
-
-    <section class="projects">
-        <div class="project-card">
-            <div class="project-img"></div>
-            <div class="project-info">
-                <span class="mono">UI/UX DESIGN</span>
-                <h2>NEON OS</h2>
-                <p>A custom dashboard interface for biometric data visualization. Built with extreme attention to detail and interaction design.</p>
-                <a href="#" class="btn">View Project</a>
-            </div>
+        <div class="section-label" id="work">
+            <span class="mono">SELECTED_PROJECTS</span>
+            <span class="mono">VOL. 01</span>
         </div>
 
-        <div class="project-card">
-            <div class="project-img"></div>
-            <div class="project-info">
-                <span class="mono">DEVELOPMENT</span>
-                <h2>GHOST PROTOCOL</h2>
-                <p>An end-to-end encrypted messaging service with a focus on speed and security. No databases, just raw socket performance.</p>
-                <a href="#" class="btn">View Project</a>
+        <section class="projects">
+            <div class="project-card">
+                <div class="project-img"></div>
+                <div class="project-info">
+                    <span class="mono">01 / ARCHITECTURE</span>
+                    <h2>TITAN UI</h2>
+                    <p>A modular design system focused on extreme performance and aesthetic precision. Developed for high-growth tech startups.</p>
+                    <a href="#" class="btn">Explore Case Study</a>
+                </div>
             </div>
-        </div>
-    </section>
+
+            <div class="project-card">
+                <div class="project-img"></div>
+                <div class="project-info">
+                    <span class="mono">02 / DEVELOPMENT</span>
+                    <h2>VOID ENGINE</h2>
+                    <p>A custom-built backend solution for real-time asset tracking. Optimized for low-latency environments and massive scale.</p>
+                    <a href="#" class="btn">Explore Case Study</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer id="contact">
-        <div class="mono">READY TO BUILD?</div>
-        <div class="footer-cta">LET'S MAKE <span class="accent">HISTORY.</span></div>
-        <p>damionthomasson@gmail.com</p>
+        <div class="mono">GET_IN_TOUCH</div>
+        <div class="footer-cta">Let's build <span class="outline">the future.</span></div>
+        <p style="color: var(--accent); font-family: 'JetBrains Mono'; font-weight: bold; letter-spacing: 1px;">DAMIONTHOMASSON@GMAIL.COM</p>
     </footer>
 
 </body>
