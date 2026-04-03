@@ -4,16 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DAMION // 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Changed from pure black to a deep midnight gray so gradients actually show up */
-            --bg: #0a0a0c; 
+            --bg: #0a0a0a;
             --text: #ffffff;
             --accent: #d1ff00; 
-            --sub: #999999;
-            --grid: rgba(255, 255, 255, 0.07);
+            --sub: #777777;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -23,147 +21,189 @@
             color: var(--text);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            min-height: 100vh;
+            /* This is the secret sauce: The Grainy Gradient */
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(209, 255, 0, 0.15) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, rgba(0, 242, 255, 0.1) 0, transparent 50%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-attachment: fixed;
         }
 
-        /* --- THE "NOT DOGSHITE" BACKGROUND --- */
-        .visual-layer {
+        /* --- Navigation --- */
+        nav {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            background: var(--bg);
+            top: 0; width: 100%;
+            padding: 30px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, var(--bg), transparent);
+        }
+        .logo { font-weight: 900; letter-spacing: -1px; font-size: 1.2rem; }
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { opacity: 1; color: var(--accent); }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+        }
+
+        .mono { 
+            font-family: 'JetBrains Mono', monospace; 
+            font-size: 0.8rem; 
+            color: var(--accent); 
+            margin-bottom: 20px; 
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            font-size: clamp(4rem, 18vw, 12rem);
+            font-weight: 900;
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        /* The Miseltwister Outline Style */
+        .outline {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 600px;
+            color: var(--sub);
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        /* --- Projects Section --- */
+        .work { padding: 100px 10%; }
+        
+        .section-header {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            margin-bottom: 80px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .project-card {
+            margin-bottom: 120px;
+            transition: 0.5s;
+        }
+
+        .project-card:hover { transform: translateY(-10px); }
+
+        .project-card .img-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            position: relative;
             overflow: hidden;
         }
 
-        /* Bright Glows - Increased Opacity so you can see them */
-        .blob {
-            position: absolute;
-            width: 800px; height: 800px;
-            background: radial-gradient(circle, rgba(209, 255, 0, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: move 20s infinite alternate;
+        /* Hover effect on images */
+        .project-card:hover .img-placeholder {
+            border-color: var(--accent);
+            background: rgba(209, 255, 0, 0.05);
         }
 
-        .blob-2 {
-            top: 40%; right: -10%;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
-            animation-delay: -5s;
+        .project-card h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
         }
 
-        @keyframes move {
-            0% { transform: translate(-10%, -10%); }
-            100% { transform: translate(20%, 20%); }
+        .project-card p {
+            color: var(--sub);
+            font-size: 1.1rem;
         }
 
-        /* The Grid - Sharp and Visible */
-        .grid-lines {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(var(--grid) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-            background-size: 60px 60px;
-            /* Subtle fade out at bottom */
-            mask-image: linear-gradient(to bottom, black 70%, transparent);
-            -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
+        /* --- Footer --- */
+        footer {
+            padding: 100px 10%;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: left;
         }
 
-        /* Static/Noise overlay for that "Premium" feel */
-        .noise-overlay {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            opacity: 0.2;
-            pointer-events: none;
-            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
-            filter: contrast(150%) brightness(1000%);
+        .big-link {
+            font-size: clamp(2rem, 8vw, 6rem);
+            font-weight: 900;
+            text-decoration: none;
+            color: var(--text);
+            display: block;
+            margin-top: 20px;
+            transition: 0.3s;
         }
 
-        /* --- CONTENT STYLES --- */
-        nav {
-            position: fixed;
-            top: 30px; left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            background: rgba(10, 10, 10, 0.8);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 30px;
-            border-radius: 100px;
-            backdrop-filter: blur(10px);
-            display: flex; gap: 30px;
-        }
-        nav a { color: #fff; text-decoration: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; }
-        nav a:hover { color: var(--accent); }
+        .big-link:hover { color: var(--accent); padding-left: 20px; }
 
-        .hero {
-            height: 100vh;
-            display: flex; flex-direction: column;
-            justify-content: center; padding: 0 10%;
-        }
-
-        .mono { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.8rem; margin-bottom: 20px; letter-spacing: 2px; }
-
-        h1 {
-            font-size: clamp(4rem, 15vw, 10rem);
-            line-height: 0.8; font-weight: 900;
-            margin-bottom: 30px; text-transform: uppercase;
-        }
-
-        .outline { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.4); }
-
-        .hero p {
-            font-size: 1.4rem; color: var(--sub); max-width: 600px; line-height: 1.4;
-            border-left: 4px solid var(--accent); padding-left: 30px;
-        }
-
-        /* Projects */
-        .projects { padding: 100px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; transition: 0.4s; }
-        .card:hover { border-color: var(--accent); background: rgba(255,255,255,0.05); transform: translateY(-10px); }
-        h2 { font-size: 2.5rem; margin-bottom: 10px; }
-
-        @media (max-width: 900px) {
-            .projects { grid-template-columns: 1fr; }
-            h1 { font-size: 4.5rem; }
+        @media (max-width: 768px) {
+            h1 { font-size: 5rem; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="visual-layer">
-        <div class="blob"></div>
-        <div class="blob-2"></div>
-        <div class="grid-lines"></div>
-        <div class="noise-overlay"></div>
-    </div>
-
     <nav>
-        <a href="#work">Work</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <div class="logo">DAMION.</div>
+        <div class="nav-links">
+            <a href="#work">Work</a>
+            <a href="mailto:your@email.com">Contact</a>
+        </div>
     </nav>
 
     <section class="hero">
-        <div class="mono">// 2026_EST_CORE</div>
+        <div class="mono">BUILDING_DIGITAL_EXCELLENCE</div>
         <h1>DAMION<br><span class="outline">THOMASSON</span></h1>
-        <p>Full-stack developer architecting high-performance digital landscapes. Clean code. Aggressive design.</p>
+        <p>A full-stack developer obsessed with performance, clean aesthetics, and the 2026 web standard.</p>
     </section>
 
-    <section class="projects" id="work">
-        <div class="card">
-            <div class="mono">01. DEVELOPMENT</div>
-            <h2>TITAN CORE</h2>
-            <p>Modern architecture for the next web.</p>
+    <section class="work" id="work">
+        <div class="section-header">
+            <span class="mono">SELECTED_WORKS</span>
+            <span class="mono">/02</span>
         </div>
-        <div class="card">
-            <div class="mono">02. DESIGN</div>
-            <h2>VOID UI</h2>
-            <p>Dark-themed design systems.</p>
+
+        <div class="project-card">
+            <div class="img-placeholder"></div>
+            <h2>TITAN_UI</h2>
+            <p>High-fidelity design systems for modern tech stacks.</p>
+        </div>
+
+        <div class="project-card">
+            <div class="img-placeholder"></div>
+            <h2>VOID_ENGINE</h2>
+            <p>Real-time data visualization and backend architecture.</p>
         </div>
     </section>
+
+    <footer>
+        <span class="mono">HAVE A PROJECT?</span>
+        <a href="mailto:your@email.com" class="big-link">LET'S TALK.</a>
+    </footer>
 
 </body>
 </html>
