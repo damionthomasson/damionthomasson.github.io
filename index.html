@@ -6,60 +6,66 @@
     <title>Damion | Rising Developer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <style>
         :root {
             --accent: #d1ff00;
             --purple: #7e22ce;
         }
         
-        * { cursor: none !important; }
+        /* HIDDEN CURSOR ONLY ON DESKTOP */
+        @media (min-width: 1024px) {
+            * { cursor: none !important; }
+        }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: #050505; 
             color: #d1d5db;
+            margin: 0;
+            padding: 0;
+            /* FORCING SCROLL TO BE ACTIVE */
+            overflow-y: auto !important; 
             overflow-x: hidden;
-            line-height: 1.5;
+            height: auto;
         }
         
         .mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* High-end Glassmorphism */
         .glass { 
             background: rgba(15, 15, 15, 0.6); 
             backdrop-filter: blur(20px); 
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05); 
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.4s ease;
         }
         .glass:hover { 
             border-color: rgba(209, 255, 0, 0.3); 
             background: rgba(20, 20, 20, 0.8);
+            transform: translateY(-4px);
         }
 
-        /* Fixed Background Mesh */
         .bg-mesh {
             position: fixed; inset: 0; z-index: -1;
             background-color: #050505;
             background-image: 
                 radial-gradient(at 0% 0%, rgba(126, 34, 206, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(209, 255, 0, 0.06) 0px, transparent 50%);
-        }
-        .bg-mesh::after {
-            content: ""; position: absolute; inset: 0; opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+                radial-gradient(at 100% 100%, rgba(209, 255, 0, 0.06) 0px, transparent 50%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
         }
 
         #cursor-dot {
             position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%;
             pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            display: none;
         }
         #cursor-glow {
             position: fixed; width: 400px; height: 400px; 
             background: radial-gradient(circle, rgba(209, 255, 0, 0.07) 0%, transparent 70%);
             pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
+            display: none;
+        }
+        @media (min-width: 1024px) {
+            #cursor-dot, #cursor-glow { display: block; }
         }
 
         #progress {
@@ -73,11 +79,17 @@
             -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.3);
         }
 
-        /* Initial state for animations (ScrollTrigger will handle the rest) */
-        .reveal { opacity: 0; transform: translateY(30px); will-change: transform, opacity; }
+        /* SIMPLE CSS FADE IN (NO JS REQUIRED FOR VISIBILITY) */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal { 
+            animation: fadeIn 0.8s ease forwards; 
+        }
     </style>
 </head>
-<body class="bg-mesh text-gray-300 antialiased selection:bg-[#d1ff00]/30">
+<body class="antialiased selection:bg-[#d1ff00]/30">
 
     <div id="progress"></div>
     <div id="cursor-dot"></div>
@@ -94,123 +106,109 @@
         </div>
     </nav>
 
-    <header class="relative pt-52 pb-32 px-6">
-        <div class="max-w-6xl mx-auto relative z-10">
-            <div class="reveal mono inline-flex items-center gap-3 px-4 py-1.5 mb-8 glass rounded-full text-[10px] font-bold tracking-widest text-[#d1ff00] uppercase">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d1ff00] opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-[#d1ff00]"></span>
-                </span>
-                Leveling Up // Month 02
-            </div>
-            
-            <h1 class="reveal text-7xl md:text-[10rem] font-extrabold tracking-tighter text-white mb-10 leading-[0.85] uppercase">
-                DAMION<br>
-                <span class="outline-text">THOMASSON</span>
-            </h1>
-            
-            <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-                <p class="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed border-l-2 border-[#d1ff00] pl-6">
-                    A dedicated developer focused on mastering full-stack systems and clean UI design. Turning complex logic into fluid digital experiences.
-                </p>
-                <div class="mono text-[10px] text-gray-500 uppercase tracking-widest">
-                    London / Learning Mode: Active
+    <div class="relative w-full">
+        <header class="relative pt-52 pb-32 px-6">
+            <div class="max-w-6xl mx-auto relative z-10">
+                <div class="reveal mono inline-flex items-center gap-3 px-4 py-1.5 mb-8 glass rounded-full text-[10px] font-bold tracking-widest text-[#d1ff00] uppercase">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d1ff00] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#d1ff00]"></span>
+                    </span>
+                    Leveling Up // Month 02
                 </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-6 pb-24">
-        
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24">
-            <div class="reveal md:col-span-8 glass p-12 rounded-[2.5rem] flex flex-col justify-center relative overflow-hidden group">
-                <h2 class="text-4xl font-extrabold text-white mb-6 uppercase tracking-tight">Growth<br><span class="text-[#d1ff00]">Mindset</span></h2>
-                <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-lg">
-                    Currently diving deep into modern web standards and responsive design. My goal is to build high-performance applications with a focus on clean, maintainable code.
-                </p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">HTML5 & CSS3</span>
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px) font-bold uppercase tracking-widest text-white rounded-md">Modern JavaScript</span>
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Responsive UI</span>
-                </div>
-            </div>
-
-            <div class="reveal md:col-span-4 glass p-8 rounded-[2.5rem] bg-gradient-to-br from-purple-900/10 to-transparent flex flex-col justify-between">
-                <div>
-                    <div class="text-6xl font-extrabold text-white mb-1 tracking-tighter">02</div>
-                    <div class="mono text-[#d1ff00] font-bold uppercase tracking-widest text-[10px]">Months of Code</div>
-                </div>
-                <div class="mt-12 space-y-4">
-                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Current Stack:</div>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="text-white text-xs mono opacity-80">Tailwind</span>
-                        <span class="text-white text-xs mono opacity-80">JavaScript</span>
-                        <span class="text-white text-xs mono opacity-80">Vue.js</span>
+                
+                <h1 class="reveal text-7xl md:text-[10rem] font-extrabold tracking-tighter text-white mb-10 leading-[0.85] uppercase" style="animation-delay: 0.1s;">
+                    DAMION<br>
+                    <span class="outline-text">THOMASSON</span>
+                </h1>
+                
+                <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end gap-8" style="animation-delay: 0.2s;">
+                    <p class="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed border-l-2 border-[#d1ff00] pl-6">
+                        A dedicated developer focused on mastering full-stack systems and clean UI design. Turning complex logic into fluid digital experiences.
+                    </p>
+                    <div class="mono text-[10px] text-gray-500 uppercase tracking-widest">
+                        London / Learning Mode: Active
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
 
-        <div id="work" class="space-y-12">
-            <div class="reveal flex justify-between items-end border-b border-white/10 pb-6">
-                <h3 class="text-2xl font-bold text-white uppercase tracking-widest">Initial Builds</h3>
-                <span class="mono text-[10px] text-gray-500">BOOTING_WORKS[]</span>
-            </div>
-
-            <div class="reveal glass border-dashed border-2 border-white/5 p-32 rounded-[2.5rem] text-center group cursor-pointer">
-                <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-[#d1ff00]/20 transition-all">
-                    <svg class="w-6 h-6 text-gray-500 group-hover:text-[#d1ff00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        <main class="max-w-6xl mx-auto px-6 pb-24">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24">
+                <div class="reveal md:col-span-8 glass p-12 rounded-[2.5rem] flex flex-col justify-center relative overflow-hidden group" style="animation-delay: 0.3s;">
+                    <h2 class="text-4xl font-extrabold text-white mb-6 uppercase tracking-tight">Growth<br><span class="text-[#d1ff00]">Mindset</span></h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-lg">
+                        Currently diving deep into modern web standards and responsive design. My goal is to build high-performance applications with a focus on clean, maintainable code.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">HTML5 & CSS3</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Modern JavaScript</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Responsive UI</span>
+                    </div>
                 </div>
-                <p class="mono text-gray-500 uppercase tracking-widest text-xs group-hover:text-white transition-colors">Project Deployment in Progress</p>
+
+                <div class="reveal md:col-span-4 glass p-8 rounded-[2.5rem] bg-gradient-to-br from-purple-900/10 to-transparent flex flex-col justify-between" style="animation-delay: 0.4s;">
+                    <div>
+                        <div class="text-6xl font-extrabold text-white mb-1 tracking-tighter">02</div>
+                        <div class="mono text-[#d1ff00] font-bold uppercase tracking-widest text-[10px]">Months of Code</div>
+                    </div>
+                    <div class="mt-12 space-y-4">
+                        <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Current Stack:</div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="text-white text-xs mono opacity-80">Tailwind</span>
+                            <span class="text-white text-xs mono opacity-80">JavaScript</span>
+                            <span class="text-white text-xs mono opacity-80">Vue.js</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-    </main>
+            <div id="work" class="space-y-12">
+                <div class="reveal flex justify-between items-end border-b border-white/10 pb-6" style="animation-delay: 0.5s;">
+                    <h3 class="text-2xl font-bold text-white uppercase tracking-widest">Initial Builds</h3>
+                    <span class="mono text-[10px] text-gray-500">BOOTING_WORKS[]</span>
+                </div>
 
-    <footer class="max-w-6xl mx-auto px-6 py-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-        <p class="reveal mono text-gray-500 font-medium tracking-[0.3em] uppercase text-[9px]">&copy; 2026 DAMION THOMASSON // LEARNING & BUILDING</p>
-        <div class="reveal flex gap-8 mono text-[9px] uppercase tracking-widest text-gray-400">
-            <a href="https://github.com/MiselTwister" target="_blank" class="hover:text-white transition-colors">GitHub</a>
-        </div>
-    </footer>
+                <div class="reveal glass border-dashed border-2 border-white/5 p-32 rounded-[2.5rem] text-center group cursor-pointer" style="animation-delay: 0.6s;">
+                    <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-[#d1ff00]/20 transition-all">
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-[#d1ff00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    </div>
+                    <p class="mono text-gray-500 uppercase tracking-widest text-xs group-hover:text-white transition-colors">Project Deployment in Progress</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="max-w-6xl mx-auto px-6 py-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+            <p class="mono text-gray-500 font-medium tracking-[0.3em] uppercase text-[9px]">&copy; 2026 DAMION THOMASSON // LEARNING & BUILDING</p>
+            <div class="flex gap-8 mono text-[9px] uppercase tracking-widest text-gray-400">
+                <a href="https://github.com/MiselTwister" target="_blank" class="hover:text-white transition-colors">GitHub</a>
+            </div>
+        </footer>
+    </div>
 
     <script>
-        // Ensure GSAP is loaded before running
-        window.onload = () => {
-            gsap.registerPlugin(ScrollTrigger);
-
-            // Custom Cursor
-            const dot = document.getElementById('cursor-dot');
-            const glow = document.getElementById('cursor-glow');
+        // Custom Cursor Movement
+        const dot = document.getElementById('cursor-dot');
+        const glow = document.getElementById('cursor-glow');
+        
+        document.addEventListener('mousemove', (e) => {
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
             
-            window.addEventListener('mousemove', (e) => {
-                gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0.1 });
-                gsap.to(glow, { x: e.clientX, y: e.clientY, duration: 0.3 });
-            });
+            // Using a slight delay for the glow for a "liquid" feel
+            setTimeout(() => {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
+            }, 50);
+        });
 
-            // Entry Animations for all elements with class 'reveal'
-            gsap.utils.toArray('.reveal').forEach((el) => {
-                gsap.to(el, {
-                    scrollTrigger: {
-                        trigger: el,
-                        start: "top 95%", // Starts animation when element is near bottom of screen
-                        toggleActions: "play none none none"
-                    },
-                    opacity: 1,
-                    y: 0,
-                    duration: 1.2,
-                    ease: "power4.out"
-                });
-            });
-
-            // Progress Bar Logic
-            window.addEventListener('scroll', () => {
-                const winScroll = document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = (winScroll / height) * 100;
-                document.getElementById("progress").style.width = scrolled + "%";
-            });
-        };
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress").style.width = scrolled + "%";
+        });
     </script>
 </body>
 </html>
