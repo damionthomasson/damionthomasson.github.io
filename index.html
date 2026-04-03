@@ -8,12 +8,12 @@
     
     <style>
         :root {
-            --bg: #0a0a0a;
+            /* Changed from pure black to a deep midnight gray so gradients actually show up */
+            --bg: #0a0a0c; 
             --text: #ffffff;
             --accent: #d1ff00; 
-            --sub: #aaaaaa;
-            --grid-color: rgba(209, 255, 0, 0.15); /* Brightened the grid */
-            --glow-color: rgba(209, 255, 0, 0.2);  /* Brightened the glow */
+            --sub: #999999;
+            --grid: rgba(255, 255, 255, 0.07);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -26,76 +26,77 @@
             min-height: 100vh;
         }
 
-        /* --- THE HIGH-CONTRAST BACKGROUND --- */
-        .bg-layer {
+        /* --- THE "NOT DOGSHITE" BACKGROUND --- */
+        .visual-layer {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
-            background: #080808;
+            background: var(--bg);
+            overflow: hidden;
         }
 
-        /* Visible Moving Aurora */
-        .aurora {
+        /* Bright Glows - Increased Opacity so you can see them */
+        .blob {
             position: absolute;
-            top: -20%; left: -10%;
-            width: 70vw; height: 70vw;
-            background: radial-gradient(circle, var(--glow-color) 0%, transparent 60%);
-            filter: blur(60px);
-            animation: drift 15s infinite alternate;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(209, 255, 0, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: move 20s infinite alternate;
         }
 
-        .aurora-2 {
-            position: absolute;
-            bottom: -20%; right: -10%;
-            width: 60vw; height: 60vw;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, transparent 60%);
-            filter: blur(60px);
-            animation: drift 20s infinite alternate-reverse;
+        .blob-2 {
+            top: 40%; right: -10%;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
+            animation-delay: -5s;
         }
 
-        /* Visible Noise Texture */
-        .noise {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            opacity: 0.04;
-            pointer-events: none;
-            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+        @keyframes move {
+            0% { transform: translate(-10%, -10%); }
+            100% { transform: translate(20%, 20%); }
         }
 
-        /* Very Visible Grid */
-        .grid {
+        /* The Grid - Sharp and Visible */
+        .grid-lines {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
             background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 40px 40px;
-            mask-image: radial-gradient(circle at 50% 50%, white, transparent 85%);
-            -webkit-mask-image: radial-gradient(circle at 50% 50%, white, transparent 85%);
-            opacity: 0.6; /* Pushed opacity way up */
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 60px 60px;
+            /* Subtle fade out at bottom */
+            mask-image: linear-gradient(to bottom, black 70%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
         }
 
-        @keyframes drift {
-            from { transform: translate(0, 0) rotate(0deg); }
-            to { transform: translate(10%, 10%) rotate(10deg); }
+        /* Static/Noise overlay for that "Premium" feel */
+        .noise-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.2;
+            pointer-events: none;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            filter: contrast(150%) brightness(1000%);
         }
 
-        /* --- UI ELEMENTS --- */
+        /* --- CONTENT STYLES --- */
         nav {
             position: fixed;
             top: 30px; left: 50%;
             transform: translateX(-50%);
             z-index: 100;
-            background: rgba(20, 20, 20, 0.9);
-            border: 1px solid var(--grid-color);
-            padding: 10px 25px;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 30px;
             border-radius: 100px;
+            backdrop-filter: blur(10px);
             display: flex; gap: 30px;
         }
-        nav a { color: #fff; text-decoration: none; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+        nav a { color: #fff; text-decoration: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; }
+        nav a:hover { color: var(--accent); }
 
         .hero {
             height: 100vh;
@@ -103,36 +104,40 @@
             justify-content: center; padding: 0 10%;
         }
 
+        .mono { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.8rem; margin-bottom: 20px; letter-spacing: 2px; }
+
         h1 {
-            font-size: clamp(3rem, 12vw, 9rem);
+            font-size: clamp(4rem, 15vw, 10rem);
             line-height: 0.8; font-weight: 900;
-            margin-bottom: 20px;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 30px; text-transform: uppercase;
         }
 
         .outline { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.4); }
 
         .hero p {
-            font-size: 1.3rem; color: var(--sub); max-width: 550px;
-            border-left: 4px solid var(--accent); padding-left: 20px;
+            font-size: 1.4rem; color: var(--sub); max-width: 600px; line-height: 1.4;
+            border-left: 4px solid var(--accent); padding-left: 30px;
         }
 
-        .btn {
-            margin-top: 40px;
-            display: inline-block; padding: 15px 40px;
-            background: var(--accent); color: #000;
-            text-decoration: none; font-weight: 900;
-            text-transform: uppercase; border-radius: 5px;
+        /* Projects */
+        .projects { padding: 100px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; transition: 0.4s; }
+        .card:hover { border-color: var(--accent); background: rgba(255,255,255,0.05); transform: translateY(-10px); }
+        h2 { font-size: 2.5rem; margin-bottom: 10px; }
+
+        @media (max-width: 900px) {
+            .projects { grid-template-columns: 1fr; }
+            h1 { font-size: 4.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-layer">
-        <div class="aurora"></div>
-        <div class="aurora-2"></div>
-        <div class="grid"></div>
-        <div class="noise"></div>
+    <div class="visual-layer">
+        <div class="blob"></div>
+        <div class="blob-2"></div>
+        <div class="grid-lines"></div>
+        <div class="noise-overlay"></div>
     </div>
 
     <nav>
@@ -142,10 +147,22 @@
     </nav>
 
     <section class="hero">
-        <div style="font-family: 'JetBrains Mono'; color: var(--accent); margin-bottom: 10px;">// SYSTEM_READY</div>
+        <div class="mono">// 2026_EST_CORE</div>
         <h1>DAMION<br><span class="outline">THOMASSON</span></h1>
-        <p>Full-stack developer building high-fidelity digital experiences. Code that performs, design that hits.</p>
-        <div><a href="#work" class="btn">View My Work</a></div>
+        <p>Full-stack developer architecting high-performance digital landscapes. Clean code. Aggressive design.</p>
+    </section>
+
+    <section class="projects" id="work">
+        <div class="card">
+            <div class="mono">01. DEVELOPMENT</div>
+            <h2>TITAN CORE</h2>
+            <p>Modern architecture for the next web.</p>
+        </div>
+        <div class="card">
+            <div class="mono">02. DESIGN</div>
+            <h2>VOID UI</h2>
+            <p>Dark-themed design systems.</p>
+        </div>
     </section>
 
 </body>
