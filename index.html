@@ -8,12 +8,11 @@
     
     <style>
         :root {
-            --bg: #000000;
+            --bg: #050505;
             --text: #ffffff;
-            --accent: #d1ff00; /* Neon Lime */
+            --accent: #d1ff00; 
             --sub: #888888;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -27,185 +26,142 @@
             min-height: 100vh;
         }
 
-        /* --- THE EPIC BACKGROUND --- */
-        body::before {
-            content: "";
+        /* --- THE BACKGROUND (CRANKED UP INTENSITY) --- */
+        .bg-wrapper {
             position: fixed;
             top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            /* Deep Mesh Gradient */
-            background: 
-                radial-gradient(circle at 15% 25%, rgba(209, 255, 0, 0.04) 0%, transparent 35%),
-                radial-gradient(circle at 85% 75%, rgba(0, 242, 255, 0.03) 0%, transparent 35%),
-                #050505;
-            z-index: -2;
+            width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #000;
         }
 
-        /* The Grid Overlay */
-        body::after {
-            content: "";
-            position: fixed;
+        /* Moving Glow 1 */
+        .glow-1 {
+            position: absolute;
+            top: -10%; left: -10%;
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(209, 255, 0, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: move 20s infinite alternate;
+        }
+
+        /* Moving Glow 2 */
+        .glow-2 {
+            position: absolute;
+            bottom: -10%; right: -10%;
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: move 25s infinite alternate-reverse;
+        }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(20%, 20%); }
+        }
+
+        /* High-Visibility Grid */
+        .grid-overlay {
+            position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
             background-image: 
                 linear-gradient(var(--border) 1px, transparent 1px),
                 linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse at center, black, transparent 90%);
-            -webkit-mask-image: radial-gradient(ellipse at center, black, transparent 90%);
-            opacity: 0.15;
-            z-index: -1;
-            pointer-events: none;
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black, transparent 95%);
+            -webkit-mask-image: radial-gradient(circle at center, black, transparent 95%);
+            opacity: 0.3;
         }
 
-        /* --- Navigation --- */
+        /* --- UI ELEMENTS --- */
         nav {
             position: fixed;
-            top: 30px;
-            left: 50%;
+            top: 30px; left: 50%;
             transform: translateX(-50%);
             z-index: 100;
-            background: rgba(10, 10, 10, 0.6);
+            background: rgba(15, 15, 15, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             padding: 12px 30px;
             border-radius: 100px;
-            display: flex;
-            gap: 40px;
+            display: flex; gap: 40px;
         }
         nav a {
-            color: var(--sub);
-            text-decoration: none;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-            transition: 0.3s;
+            color: var(--sub); text-decoration: none; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 700; transition: 0.3s;
         }
-        nav a:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+        nav a:hover { color: var(--accent); }
 
-        /* --- Hero Section --- */
         .hero {
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 10%;
+            display: flex; flex-direction: column;
+            justify-content: center; padding: 0 10%;
+            position: relative;
         }
 
         .mono { 
-            font-family: 'JetBrains Mono', monospace; 
-            color: var(--accent); 
-            font-size: 0.8rem; 
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            font-family: 'JetBrains Mono', monospace; color: var(--accent); 
+            font-size: 0.8rem; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;
         }
         
-        .mono::before { content: ""; width: 20px; height: 1px; background: var(--accent); }
+        .mono::before { content: ""; width: 30px; height: 1px; background: var(--accent); }
 
         h1 {
-            font-size: clamp(3.5rem, 15vw, 9.5rem);
-            line-height: 0.8;
-            letter-spacing: -0.06em;
-            font-weight: 900;
-            margin-bottom: 40px;
-            text-transform: uppercase;
+            font-size: clamp(3rem, 15vw, 9rem);
+            line-height: 0.8; letter-spacing: -0.06em; font-weight: 900;
+            margin-bottom: 40px; text-transform: uppercase;
         }
 
-        .outline { 
-            color: transparent; 
-            -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); 
-        }
+        .outline { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.3); }
 
         .hero p {
-            font-size: 1.2rem;
-            color: var(--sub);
-            max-width: 500px;
-            line-height: 1.6;
-            border-left: 2px solid var(--accent);
-            padding-left: 25px;
+            font-size: 1.2rem; color: var(--sub); max-width: 500px; line-height: 1.6;
+            border-left: 3px solid var(--accent); padding-left: 25px;
         }
 
-        /* --- Projects Section --- */
         .section-label { 
-            padding: 150px 10% 40px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 100px;
+            padding: 150px 10% 40px; display: flex; justify-content: space-between; 
+            align-items: center; border-bottom: 1px solid var(--border); margin-bottom: 100px;
         }
-
-        .projects { padding: 0 10%; }
 
         .project-card {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 100px;
-            margin-bottom: 250px;
-            align-items: center;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 100px;
+            padding: 0 10%; margin-bottom: 200px; align-items: center;
         }
-
-        .project-card:nth-child(even) { direction: rtl; }
-        .project-card:nth-child(even) .project-info { direction: ltr; }
 
         .project-img {
-            background: linear-gradient(45deg, #0d0d0d, #1a1a1a);
-            aspect-ratio: 16/10;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 40px 80px -15px rgba(0,0,0,0.6);
+            background: rgba(255,255,255,0.03); aspect-ratio: 16/10;
+            border-radius: 24px; border: 1px solid var(--border);
+            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .project-card:hover .project-img { 
-            transform: translateY(-15px) scale(1.03); 
-            border-color: var(--accent);
-            box-shadow: 0 0 40px rgba(209, 255, 0, 0.1);
-        }
+        .project-card:hover .project-img { border-color: var(--accent); transform: translateY(-10px); }
 
-        .project-info h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 25px; letter-spacing: -3px; font-weight: 900; }
-        
-        .project-info p { color: var(--sub); line-height: 1.8; margin-bottom: 40px; font-size: 1.1rem; }
+        h2 { font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; letter-spacing: -2px; }
 
         .btn {
-            display: inline-block;
-            padding: 18px 40px;
-            background: transparent;
-            border: 1px solid var(--text);
-            color: var(--text);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: 0.4s;
+            display: inline-block; padding: 15px 35px; border: 1px solid #fff;
+            color: #fff; text-decoration: none; font-weight: bold; margin-top: 30px;
+            text-transform: uppercase; font-size: 0.8rem; transition: 0.3s;
         }
-
-        .btn:hover { background: var(--accent); border-color: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
-
-        /* --- Footer --- */
-        footer {
-            padding: 150px 10%;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            background: rgba(0,0,0,0.4);
-        }
-
-        .footer-cta { font-size: clamp(3rem, 10vw, 6rem); font-weight: 900; letter-spacing: -4px; margin-bottom: 20px; text-transform: uppercase;}
+        .btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
 
         @media (max-width: 900px) {
-            .project-card { grid-template-columns: 1fr; gap: 40px; margin-bottom: 150px;}
-            nav { width: 90%; gap: 15px; top: 15px; }
-            h1 { margin-bottom: 20px; }
-            .section-label { padding-top: 100px; }
+            .project-card { grid-template-columns: 1fr; gap: 40px; }
+            h1 { font-size: 4rem; }
         }
     </style>
 </head>
 <body>
+
+    <div class="bg-wrapper">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+        <div class="grid-overlay"></div>
+    </div>
 
     <nav>
         <a href="#work">Work</a>
@@ -213,46 +169,25 @@
         <a href="#contact">Contact</a>
     </nav>
 
-    <main>
-        <section class="hero">
-            <div class="mono">SYSTEM_STATUS: ONLINE // 2026</div>
-            <h1>DAMION<br><span class="outline">THOMASSON</span></h1>
-            <p>Full-stack developer building high-fidelity digital experiences. Architecting code that performs as well as it looks.</p>
-        </section>
+    <section class="hero">
+        <div class="mono">STATUS: ACTIVE // PORTFOLIO 2026</div>
+        <h1>DAMION<br><span class="outline">THOMASSON</span></h1>
+        <p>Full-stack developer building high-fidelity digital experiences. Architecting code that performs as well as it looks.</p>
+    </section>
 
-        <div class="section-label" id="work">
-            <span class="mono">SELECTED_PROJECTS</span>
-            <span class="mono">VOL. 01</span>
+    <div class="section-label" id="work">
+        <span class="mono">PROJECTS</span>
+        <span class="mono">01 - 02</span>
+    </div>
+
+    <section class="project-card">
+        <div class="project-img"></div>
+        <div class="project-info">
+            <h2>TITAN CORE</h2>
+            <p style="color: var(--sub); margin-top: 20px;">A performance-first design system for the modern web.</p>
+            <a href="#" class="btn">View Details</a>
         </div>
-
-        <section class="projects">
-            <div class="project-card">
-                <div class="project-img"></div>
-                <div class="project-info">
-                    <span class="mono">01 / ARCHITECTURE</span>
-                    <h2>TITAN UI</h2>
-                    <p>A modular design system focused on extreme performance and aesthetic precision. Developed for high-growth tech startups.</p>
-                    <a href="#" class="btn">Explore Case Study</a>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-img"></div>
-                <div class="project-info">
-                    <span class="mono">02 / DEVELOPMENT</span>
-                    <h2>VOID ENGINE</h2>
-                    <p>A custom-built backend solution for real-time asset tracking. Optimized for low-latency environments and massive scale.</p>
-                    <a href="#" class="btn">Explore Case Study</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer id="contact">
-        <div class="mono">GET_IN_TOUCH</div>
-        <div class="footer-cta">Let's build <span class="outline">the future.</span></div>
-        <p style="color: var(--accent); font-family: 'JetBrains Mono'; font-weight: bold; letter-spacing: 1px;">DAMIONTHOMASSON@GMAIL.COM</p>
-    </footer>
+    </section>
 
 </body>
 </html>
