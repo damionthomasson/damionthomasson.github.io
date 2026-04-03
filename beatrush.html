@@ -10,164 +10,188 @@
         :root {
             --rush-cyan: #00f3ff;
             --rush-pink: #ff0055;
-            --bg-dark: #080808;
+            --bg-dark: #050505;
+            --panel-bg: rgba(10, 10, 10, 0.9);
         }
 
         body {
             background-color: var(--bg-dark);
             font-family: 'JetBrains Mono', monospace;
-            color: #a0a0a0;
+            color: #d1d5db;
             overflow-x: hidden;
         }
 
-        /* Scanline / CRT Effect */
-        body::before {
-            content: " ";
-            display: block;
+        /* Animated Grid Background */
+        .grid-bg {
             position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 100;
-            background-size: 100% 4px, 3px 100%;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
+        }
+
+        /* CRT Scanline Effect Overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .terminal-panel {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        /* HUD Brackets */
+        .terminal-panel::before, .terminal-panel::after {
+            content: "";
+            position: absolute;
+            width: 10px; height: 10px;
+            border-color: var(--rush-cyan);
+            border-style: solid;
             pointer-events: none;
         }
+        .terminal-panel::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+        .terminal-panel::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
 
-        /* Subtle Flicker */
-        @keyframes flicker {
-            0% { opacity: 0.97; }
-            5% { opacity: 0.95; }
-            10% { opacity: 0.9; }
-            15% { opacity: 0.98; }
-            100% { opacity: 1; }
-        }
-        .crt-overlay {
-            animation: flicker 0.15s infinite;
+        .glow-text { text-shadow: 0 0 15px var(--rush-cyan); color: var(--rush-cyan); }
+        .pink-accent { color: var(--rush-pink); }
+
+        .stat-card {
+            border-left: 2px solid var(--rush-cyan);
+            background: linear-gradient(90deg, rgba(0, 243, 255, 0.05), transparent);
         }
 
-        .glass-panel {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        @keyframes scanline {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(100%); }
         }
-
-        .glow-cyan { text-shadow: 0 0 10px var(--rush-cyan); color: var(--rush-cyan); }
-        .glow-pink { text-shadow: 0 0 10px var(--rush-pink); color: var(--rush-pink); }
-        
-        .accent-bar {
-            height: 2px;
-            background: linear-gradient(90deg, var(--rush-cyan), transparent);
-        }
-
-        .btn-terminal {
-            border: 1px solid var(--rush-cyan);
-            transition: all 0.3s ease;
-        }
-        .btn-terminal:hover {
+        .scanner {
+            position: absolute;
+            width: 100%; height: 2px;
             background: var(--rush-cyan);
-            color: black;
-            box-shadow: 0 0 20px var(--rush-cyan);
+            opacity: 0.2;
+            animation: scanline 4s linear infinite;
         }
     </style>
 </head>
-<body class="crt-overlay p-6 md:p-12">
+<body class="p-4 md:p-8">
+    <div class="grid-bg"></div>
 
-    <header class="max-w-7xl mx-auto flex justify-between items-center mb-16">
-        <div class="flex items-center gap-4">
-            <a href="index.html" class="text-xs hover:text-white transition-colors border border-white/20 px-3 py-1 rounded">← EXIT_TERMINAL</a>
-            <span class="text-[10px] tracking-[0.4em] font-bold opacity-50 uppercase">Broadcasting Node // V8_CORE</span>
+    <header class="max-w-7xl mx-auto flex flex-wrap justify-between items-end mb-12 gap-4">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <a href="index.html" class="text-[10px] bg-white/5 border border-white/10 px-4 py-1 hover:bg-white hover:text-black transition-all">TERMINATE_SESSION</a>
+                <span class="text-[10px] text-white/40 tracking-[0.3em]">LOC: 51.5074° N, 0.1278° W</span>
+            </div>
+            <h2 class="text-xs font-bold tracking-[0.5em] uppercase text-white/60">Broadcast Node // <span class="glow-text">V8_CORE</span></h2>
         </div>
-        <div class="text-[10px] text-right">
-            <span class="block glow-cyan">SYSTEM_STATUS: ONLINE</span>
-            <span class="block opacity-30">LATENCY: 14MS</span>
+        <div class="text-[10px] text-right border-r-2 border-cyan-500 pr-4">
+            <div class="text-white opacity-50 uppercase">Network Health</div>
+            <div class="glow-text font-bold">STABLE // 99.8% UPTIME</div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <div class="lg:col-span-8">
-            <div class="glass-panel p-1 rounded-sm mb-8 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" 
-                     alt="BEATRUSH SCREEN" 
-                     class="w-full h-auto opacity-80 grayscale hover:grayscale-0 transition-all duration-700">
+        <div class="lg:col-span-8 space-y-6">
+            <div class="terminal-panel overflow-hidden">
+                <div class="scanner"></div>
+                <div class="p-1">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" 
+                         alt="Main Visual" 
+                         class="w-full grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-1000">
+                </div>
+                <div class="absolute bottom-4 left-4 bg-black/80 px-4 py-2 border border-white/10">
+                    <span class="text-[10px] text-cyan-400 font-bold tracking-widest uppercase">Live View: Primary_Display</span>
+                </div>
             </div>
             
-            <h1 class="text-6xl md:text-8xl font-black text-white italic tracking-tighter mb-4">
-                BEATRUSH <span class="glow-cyan">V8</span>
-            </h1>
-            <div class="accent-bar w-64 mb-8"></div>
-            
-            <p class="text-xl text-gray-400 max-w-3xl leading-relaxed mb-12">
-                BEATRUSH is a high-performance broadcast terminal engineered for the next generation of gamers. Moving beyond simple web design, V8_CORE utilizes a reactive <span class="text-white">Inertia.js pipeline</span> to deliver real-time track metadata and interactive listener tools within a brutalist, CRT-inspired digital environment.
-            </p>
+            <div class="py-6">
+                <h1 class="text-6xl md:text-9xl font-black text-white italic tracking-tighter uppercase leading-none mb-6">
+                    BEAT<span class="text-transparent" style="-webkit-text-stroke: 1px white;">RUSH</span><br>
+                    <span class="glow-text">V8.0</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-400 max-w-2xl border-l-2 border-white/20 pl-6 leading-relaxed">
+                    A high-performance broadcast engine built for the underground. Integrating <span class="text-white">Inertia.js</span> with <span class="text-white">Vue 3</span>, V8_CORE transforms raw audio data into a reactive visual experience. 
+                </p>
+            </div>
         </div>
 
-        <div class="lg:col-span-4 space-y-6">
-            <div class="glass-panel p-8 rounded-sm">
-                <h2 class="text-xs font-bold text-white mb-6 uppercase tracking-[0.3em] border-b border-white/10 pb-2">Technical Engine</h2>
-                <ul class="space-y-4 text-xs">
-                    <li class="flex justify-between">
-                        <span class="opacity-50">STACK</span>
-                        <span class="text-white">Laravel / Inertia.js</span>
-                    </li>
-                    <li class="flex justify-between">
-                        <span class="opacity-50">REACTION</span>
-                        <span class="text-white">Vue 3 Composition</span>
-                    </li>
-                    <li class="flex justify-between">
-                        <span class="opacity-50">STYLING</span>
-                        <span class="text-white">Tailwind / PostCSS</span>
-                    </li>
-                    <li class="flex justify-between">
-                        <span class="opacity-50">ARCHITECTURE</span>
-                        <span class="text-white">SPA / Real-time</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="glass-panel p-8 rounded-sm border-l-2 border-pink-600">
-                <h2 class="text-xs font-bold text-white mb-6 uppercase tracking-[0.3em]">Core Modules</h2>
+        <div class="lg:col-span-4 space-y-4">
+            <div class="terminal-panel p-6">
+                <h3 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.4em] mb-6 flex justify-between">
+                    System Core <span>[01]</span>
+                </h3>
                 <div class="space-y-6">
-                    <div>
-                        <span class="glow-pink text-[10px] block mb-1">SIGNAL_INJECTION</span>
-                        <p class="text-[11px] leading-relaxed">Streamlined track-request system with server-side throttling.</p>
+                    <div class="stat-card p-4">
+                        <div class="text-[9px] uppercase opacity-50 mb-1">Stack Environment</div>
+                        <div class="text-white text-sm font-bold">LARAVEL + INERTIA.JS</div>
                     </div>
-                    <div>
-                        <span class="glow-pink text-[10px] block mb-1">DYNAMIC_ARCHIVE</span>
-                        <p class="text-[11px] leading-relaxed">Inertia partial reloads for DJ profiles and broadcast history.</p>
+                    <div class="stat-card p-4">
+                        <div class="text-[9px] uppercase opacity-50 mb-1">State Management</div>
+                        <div class="text-white text-sm font-bold">VUE 3 REACTION ENGINE</div>
                     </div>
-                    <div>
-                        <span class="glow-pink text-[10px] block mb-1">KINETIC_UI</span>
-                        <p class="text-[11px] leading-relaxed">Scale-reactive typography tied to global audio sync.</p>
+                    <div class="stat-card p-4">
+                        <div class="text-[9px] uppercase opacity-50 mb-1">Sync Protocol</div>
+                        <div class="text-white text-sm font-bold">POCKETBASE / REALTIME</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-panel p-6 border-pink-500/20">
+                <h3 class="text-[10px] font-bold text-pink-500 uppercase tracking-[0.4em] mb-6 flex justify-between">
+                    Sub-Modules <span>[02]</span>
+                </h3>
+                <div class="grid gap-4">
+                    <div class="group border border-white/5 p-3 hover:bg-pink-500/5 transition-colors">
+                        <span class="text-[10px] pink-accent block mb-1">SIGNAL_INJECTOR</span>
+                        <p class="text-[11px] opacity-60">High-speed track polling via server-side throttle.</p>
+                    </div>
+                    <div class="group border border-white/5 p-3 hover:bg-pink-500/5 transition-colors">
+                        <span class="text-[10px] pink-accent block mb-1">KINETIC_ARCHIVE</span>
+                        <p class="text-[11px] opacity-60">Asynchronous profile loading without page resets.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="lg:col-span-12 mt-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-6 border border-white/5 bg-white/5">
-                    <h3 class="text-white font-bold mb-4 uppercase italic">The Mission</h3>
-                    <p class="text-sm opacity-60">To bridge the gap between underground gaming culture and professional live broadcasting. Built for zero-latency interaction.</p>
-                </div>
-                <div class="p-6 border border-white/5 bg-white/5">
-                    <h3 class="text-white font-bold mb-4 uppercase italic">Zero Latency</h3>
-                    <p class="text-sm opacity-60">Treating live data as a visual element, moving away from traditional web layouts toward "Mission Control."</p>
-                </div>
-                <div class="p-6 border border-white/5 bg-white/5">
-                    <h3 class="text-white font-bold mb-4 uppercase italic">V8 Pipeline</h3>
-                    <p class="text-sm opacity-60">Ensuring the music never stutters via automated state updates and listener polling every 10s.</p>
-                </div>
+        <div class="lg:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+            <div class="terminal-panel p-8 group hover:border-cyan-500/50 transition-all">
+                <div class="text-cyan-500 text-3xl font-black mb-4 group-hover:scale-110 origin-left transition-transform">01.</div>
+                <h4 class="text-white font-bold uppercase text-xs tracking-widest mb-2">The Mission</h4>
+                <p class="text-[11px] leading-relaxed opacity-50">Merging gaming culture with high-fidelity broadcast standards through custom API integration.</p>
+            </div>
+            <div class="terminal-panel p-8 group hover:border-cyan-500/50 transition-all">
+                <div class="text-cyan-500 text-3xl font-black mb-4 group-hover:scale-110 origin-left transition-transform">02.</div>
+                <h4 class="text-white font-bold uppercase text-xs tracking-widest mb-2">Zero Latency</h4>
+                <p class="text-[11px] leading-relaxed opacity-50">State updates occur in < 50ms, ensuring listener interactions are reflected instantly.</p>
+            </div>
+            <div class="terminal-panel p-8 group hover:border-cyan-500/50 transition-all">
+                <div class="text-cyan-500 text-3xl font-black mb-4 group-hover:scale-110 origin-left transition-transform">03.</div>
+                <h4 class="text-white font-bold uppercase text-xs tracking-widest mb-2">Automated UI</h4>
+                <p class="text-[11px] leading-relaxed opacity-50">Interface brightness and color palettes react to the BPM and energy of the current track.</p>
             </div>
         </div>
     </main>
 
-    <footer class="max-w-7xl mx-auto py-20 mt-20 border-t border-white/10 flex justify-between items-center">
-        <div class="text-[9px] opacity-40 uppercase tracking-[0.5em]">
-            Damion Thomasson // Build_2026_Terminal
+    <footer class="max-w-7xl mx-auto mt-24 py-12 border-t border-white/5 flex flex-wrap justify-between items-center gap-8">
+        <div>
+            <div class="text-[9px] tracking-[0.8em] text-white/30 uppercase">Authorized Access Only</div>
+            <div class="text-[10px] text-white/60">SYSTEM BUILD: 2026.04.V8</div>
         </div>
-        <a href="#" class="btn-terminal px-8 py-3 text-[10px] font-bold uppercase tracking-widest">Deploy Link</a>
+        
+        <a href="#" class="px-10 py-4 bg-cyan-500 text-black font-black text-xs uppercase tracking-[0.2em] hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all">
+            Initialize_Deployment
+        </a>
     </footer>
-
 </body>
 </html>
