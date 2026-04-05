@@ -12,6 +12,7 @@
             --purple: #7e22ce;
             --rush-cyan: #00f3ff;
             --rush-fuchsia: #ff00ff;
+            --truck-amber: #ff9d00;
         }
         
         @media (min-width: 1024px) {
@@ -43,16 +44,20 @@
             transform: translateY(-4px);
         }
 
-        /* Beatrush Card Hover */
+        /* Project Card Hovers */
         .beatrush-card:hover {
             border-color: var(--rush-cyan);
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
         }
 
-        /* ChloeArt Card Hover */
         .chloe-card:hover {
             border-color: var(--rush-fuchsia);
             box-shadow: 0 0 30px rgba(255, 0, 255, 0.15);
+        }
+
+        .telemetry-card:hover {
+            border-color: var(--truck-amber);
+            box-shadow: 0 0 30px rgba(255, 157, 0, 0.15);
         }
 
         .bg-mesh {
@@ -168,6 +173,7 @@
                             <span class="text-white text-xs mono opacity-80">Tailwind</span>
                             <span class="text-white text-xs mono opacity-80">JavaScript</span>
                             <span class="text-white text-xs mono opacity-80">Vue.js</span>
+                            <span class="text-white text-xs mono opacity-80">Rust</span>
                         </div>
                     </div>
                 </div>
@@ -225,7 +231,30 @@
                     </div>
                 </a>
 
-                <div class="reveal glass border-dashed border-2 border-white/5 p-16 rounded-[2.5rem] text-center group cursor-wait" style="animation-delay: 0.8s;">
+                <a href="telemetry.html" class="reveal glass telemetry-card block p-8 md:p-12 rounded-[2.5rem] group relative overflow-hidden" style="animation-delay: 0.8s;">
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                        <div>
+                            <div class="mono text-[10px] text-[#ff9d00] uppercase tracking-[0.4em] mb-4">// Desktop Utility</div>
+                            <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#ff9d00] transition-colors">
+                                ETS2 <span class="opacity-50">TELEMETRY</span>
+                            </h4>
+                            <p class="mt-4 text-gray-400 max-w-xl text-sm md:text-base leading-relaxed">
+                                Low-latency Rust backend communicating via Win32 Shared Memory to a Vue 3 HUD. Solving OS integrity level challenges for elevated processes.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="w-12 h-12 rounded-full border border-[#ff9d00]/30 flex items-center justify-center group-hover:bg-[#ff9d00] group-hover:text-black transition-all">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </div>
+                            <span class="mono text-[9px] text-gray-600 mt-4 uppercase tracking-widest">Analysis</span>
+                        </div>
+                    </div>
+                    <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <span class="mono text-8xl font-bold">HUD</span>
+                    </div>
+                </a>
+
+                <div class="reveal glass border-dashed border-2 border-white/5 p-16 rounded-[2.5rem] text-center group cursor-wait" style="animation-delay: 0.9s;">
                     <p class="mono text-gray-600 uppercase tracking-widest text-xs">More Deployments Pending...</p>
                 </div>
             </div>
@@ -234,7 +263,7 @@
         <footer class="max-w-6xl mx-auto px-6 py-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
             <p class="mono text-gray-500 font-medium tracking-[0.3em] uppercase text-[9px]">&copy; 2026 DAMION THOMASSON // LEARNING & BUILDING</p>
             <div class="flex gap-8 mono text-[9px] uppercase tracking-widest text-gray-400">
-                <a href="" class="hover:text-white transition-colors">GitHub</a>
+                <a href="" target="_blank" class="hover:text-white transition-colors">GitHub</a>
             </div>
         </footer>
     </div>
