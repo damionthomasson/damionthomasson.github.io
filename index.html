@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <style>
         :root {
             --accent: #d1ff00;
+            --purple: #7e22ce;
             --rush-cyan: #00f3ff;
             --rush-fuchsia: #ff00ff;
             --truck-amber: #ff9d00;
@@ -22,29 +23,42 @@
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: #050505; 
             color: #d1d5db;
+            margin: 0;
+            padding: 0;
+            overflow-y: auto !important; 
             overflow-x: hidden;
+            height: auto;
         }
         
         .mono { font-family: 'JetBrains Mono', monospace; }
         
         .glass { 
-            background: rgba(15, 15, 15, 0.4); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            background: rgba(15, 15, 15, 0.6); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            transition: all 0.4s ease;
+        }
+        .glass:hover { 
+            background: rgba(20, 20, 20, 0.8);
+            transform: translateY(-4px);
         }
 
-        .project-card {
-            background: #0a0a0a;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Project Card Hovers */
+        .beatrush-card:hover {
+            border-color: var(--rush-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
         }
 
-        /* Dynamic Project Hover States */
-        .group:hover .beatrush-border { border-color: var(--rush-cyan); box-shadow: 0 0 30px rgba(0, 243, 255, 0.1); }
-        .group:hover .chloe-border { border-color: var(--rush-fuchsia); box-shadow: 0 0 30px rgba(255, 0, 255, 0.1); }
-        .group:hover .truck-border { border-color: var(--truck-amber); box-shadow: 0 0 30px rgba(255, 157, 0, 0.1); }
+        .chloe-card:hover {
+            border-color: var(--rush-fuchsia);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.15);
+        }
+
+        .telemetry-card:hover {
+            border-color: var(--truck-amber);
+            box-shadow: 0 0 30px rgba(255, 157, 0, 0.15);
+        }
 
         .bg-mesh {
             position: fixed; inset: 0; z-index: -1;
@@ -56,8 +70,9 @@
         }
 
         #cursor-dot {
-            position: fixed; width: 6px; height: 6px; background: #fff; border-radius: 50%;
-            pointer-events: none; z-index: 9999; display: none;
+            position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            display: none;
         }
         #cursor-glow {
             position: fixed; width: 400px; height: 400px; 
@@ -65,209 +80,213 @@
             pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
             display: none;
         }
-        @media (min-width: 1024px) { #cursor-dot, #cursor-glow { display: block; } }
+        @media (min-width: 1024px) {
+            #cursor-dot, #cursor-glow { display: block; }
+        }
+
+        #progress {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--purple), var(--accent));
+            z-index: 100; width: 0%;
+        }
 
         .outline-text {
             color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.3);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .reveal { animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .reveal { 
+            animation: fadeIn 0.8s ease forwards; 
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-[#d1ff00]/30">
 
+    <div id="progress"></div>
     <div id="cursor-dot"></div>
     <div id="cursor-glow"></div>
     <div class="bg-mesh"></div>
 
-    <nav class="fixed top-0 w-full z-50 px-4 py-6">
+    <nav class="fixed top-0 w-full z-50 px-6 py-6">
         <div class="max-w-6xl mx-auto flex justify-between items-center glass rounded-2xl px-6 py-3">
             <span class="text-white font-extrabold tracking-tighter text-2xl">DT<span class="text-[#d1ff00]">.</span></span>
             <div class="flex items-center space-x-8 text-[10px] uppercase tracking-[0.2em] font-bold">
                 <a href="#work" class="hover:text-[#d1ff00] transition-colors">Projects</a>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=damionthomasson@gmail.com" target="_blank" 
-                   class="bg-white text-black px-5 py-2.5 rounded-xl hover:bg-[#d1ff00] transition-all">Contact</a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=damionthomasson@gmail.com" target="_blank" class="bg-white text-black px-5 py-2.5 rounded-xl hover:bg-[#d1ff00] transition-all">Contact</a>
             </div>
         </div>
     </nav>
 
-    <header class="relative pt-52 pb-24 px-6">
-        <div class="max-w-6xl mx-auto reveal">
-            <div class="mono inline-flex items-center gap-3 px-4 py-1.5 mb-8 glass rounded-full text-[10px] font-bold tracking-widest text-[#d1ff00] uppercase">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d1ff00] opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-[#d1ff00]"></span>
-                </span>
-                Development Mode // Month 03
-            </div>
-            
-            <h1 class="text-7xl md:text-[9.5rem] font-extrabold tracking-tighter text-white mb-10 leading-[0.85] uppercase italic">
-                DAMION<br>
-                <span class="outline-text">THOMASSON</span>
-            </h1>
-            
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-                <p class="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed border-l-2 border-[#d1ff00] pl-6">
-                    A dedicated developer focused on mastering full-stack systems and brutalist UI design. Turning complex logic into fluid digital experiences.
-                </p>
-                <div class="mono text-[10px] text-gray-500 uppercase tracking-widest">
-                    London // 2026 Archive
+    <div class="relative w-full">
+        <header class="relative pt-52 pb-32 px-6">
+            <div class="max-w-6xl mx-auto relative z-10">
+                <div class="reveal mono inline-flex items-center gap-3 px-4 py-1.5 mb-8 glass rounded-full text-[10px] font-bold tracking-widest text-[#d1ff00] uppercase">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d1ff00] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#d1ff00]"></span>
+                    </span>
+                    Leveling Up // Month 03
                 </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-6 space-y-32 pb-32">
-        
-        <!-- Experience Bento -->
-        <section class="grid grid-cols-1 md:grid-cols-12 gap-6 reveal" style="animation-delay: 0.2s;">
-            <div class="md:col-span-8 glass p-12 rounded-[2.5rem] flex flex-col justify-center">
-                <h2 class="text-4xl font-extrabold text-white mb-6 uppercase tracking-tight">Growth<br><span class="text-[#d1ff00]">Mindset</span></h2>
-                <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-lg font-light">
-                    Currently diving deep into modern web standards. My goal is to build high-performance applications with a focus on clean, maintainable code and striking visuals.
-                </p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">HTML5 & CSS3</span>
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Modern JS</span>
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Rust</span>
-                </div>
-            </div>
-
-            <div class="md:col-span-4 glass p-8 rounded-[2.5rem] bg-gradient-to-br from-purple-900/10 to-transparent flex flex-col justify-between">
-                <div>
-                    <div class="text-6xl font-extrabold text-white mb-1 tracking-tighter">03</div>
-                    <div class="mono text-[#d1ff00] font-bold uppercase tracking-widest text-[10px]">Months of Code</div>
-                </div>
-                <div class="mt-12 space-y-4">
-                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Tech Stack:</div>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="text-white text-xs mono opacity-80">Tailwind</span>
-                        <span class="text-white text-xs mono opacity-80">Vue.js</span>
-                        <span class="text-white text-xs mono opacity-80">Laravel</span>
+                
+                <h1 class="reveal text-7xl md:text-[10rem] font-extrabold tracking-tighter text-white mb-10 leading-[0.85] uppercase" style="animation-delay: 0.1s;">
+                    DAMION<br>
+                    <span class="outline-text">THOMASSON</span>
+                </h1>
+                
+                <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end gap-8" style="animation-delay: 0.2s;">
+                    <p class="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed border-l-2 border-[#d1ff00] pl-6">
+                        A dedicated developer focused on mastering full-stack systems and clean UI design. Turning complex logic into fluid digital experiences.
+                    </p>
+                    <div class="mono text-[10px] text-gray-500 uppercase tracking-widest">
+                        London / Learning Mode: Active
                     </div>
                 </div>
             </div>
-        </section>
+        </header>
 
-        <!-- Project Grid -->
-        <section id="work" class="space-y-12 reveal" style="animation-delay: 0.4s;">
-            <div class="flex justify-between items-end border-b border-white/10 pb-6">
-                <h3 class="text-2xl font-bold text-white uppercase tracking-widest italic">Active Deployments</h3>
-                <span class="mono text-[10px] text-gray-500">V8_STATUS: STABLE</span>
+        <main class="max-w-6xl mx-auto px-6 pb-24">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24">
+                <div class="reveal md:col-span-8 glass p-12 rounded-[2.5rem] flex flex-col justify-center relative overflow-hidden group" style="animation-delay: 0.3s;">
+                    <h2 class="text-4xl font-extrabold text-white mb-6 uppercase tracking-tight">Growth<br><span class="text-[#d1ff00]">Mindset</span></h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-lg">
+                        Currently diving deep into modern web standards and responsive design. My goal is to build high-performance applications with a focus on clean, maintainable code.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">HTML5 & CSS3</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Modern JavaScript</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Responsive UI</span>
+                    </div>
+                </div>
+
+                <div class="reveal md:col-span-4 glass p-8 rounded-[2.5rem] bg-gradient-to-br from-purple-900/10 to-transparent flex flex-col justify-between" style="animation-delay: 0.4s;">
+                    <div>
+                        <div class="text-6xl font-extrabold text-white mb-1 tracking-tighter">03</div>
+                        <div class="mono text-[#d1ff00] font-bold uppercase tracking-widest text-[10px]">Months of Code</div>
+                    </div>
+                    <div class="mt-12 space-y-4">
+                        <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Current Stack:</div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="text-white text-xs mono opacity-80">Tailwind</span>
+                            <span class="text-white text-xs mono opacity-80">JavaScript</span>
+                            <span class="text-white text-xs mono opacity-80">Vue.js</span>
+                            <span class="text-white text-xs mono opacity-80">Rust</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 gap-8">
-                <!-- Beatrush -->
-                <a href="beatrush.html" class="group block">
-                    <div class="project-card beatrush-border p-8 md:p-12 rounded-[3rem] relative overflow-hidden">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
-                            <div>
-                                <div class="mono text-[10px] text-[#00f3ff] uppercase tracking-[0.4em] mb-4">// System Engine</div>
-                                <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#00f3ff] transition-colors">
-                                    BEATRUSH <span class="opacity-30">V8_CORE</span>
-                                </h4>
-                                <p class="mt-4 text-gray-400 max-w-xl leading-relaxed font-light">
-                                    A brutalist broadcast terminal built with Laravel & Inertia.js. Real-time track metadata and zero-latency UI.
-                                </p>
-                            </div>
-                            <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#00f3ff] group-hover:text-black transition-all duration-500">
+            <div id="work" class="space-y-6">
+                <div class="reveal flex justify-between items-end border-b border-white/10 pb-6" style="animation-delay: 0.5s;">
+                    <h3 class="text-2xl font-bold text-white uppercase tracking-widest">Active Projects</h3>
+                    <span class="mono text-[10px] text-gray-500">V8_DEPLOYMENTS[]</span>
+                </div>
+
+                <a href="beatrush.html" class="reveal glass beatrush-card block p-8 md:p-12 rounded-[2.5rem] group relative overflow-hidden" style="animation-delay: 0.6s;">
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                        <div>
+                            <div class="mono text-[10px] text-[#00f3ff] uppercase tracking-[0.4em] mb-4">// System Engine</div>
+                            <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#00f3ff] transition-colors">
+                                BEATRUSH <span class="opacity-50">V8_CORE</span>
+                            </h4>
+                            <p class="mt-4 text-gray-400 max-w-xl text-sm md:text-base leading-relaxed">
+                                A brutalist broadcast terminal built with Laravel & Inertia.js. Real-time track metadata, CRT overlays, and zero-latency UI.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="w-12 h-12 rounded-full border border-[#00f3ff]/30 flex items-center justify-center group-hover:bg-[#00f3ff] group-hover:text-black transition-all">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                             </div>
+                            <span class="mono text-[9px] text-gray-600 mt-4 uppercase tracking-widest">Analysis</span>
                         </div>
+                    </div>
+                    <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <span class="mono text-8xl font-bold">V8</span>
                     </div>
                 </a>
 
-                <!-- Chloe's Gallery -->
-                <a href="chloeart.html" class="group block">
-                    <div class="project-card chloe-border p-8 md:p-12 rounded-[3rem] relative overflow-hidden">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
-                            <div>
-                                <div class="mono text-[10px] text-[#ff00ff] uppercase tracking-[0.4em] mb-4">// Visual Archive</div>
-                                <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#ff00ff] transition-colors">
-                                    CHLOE'S <span class="opacity-30">GALLERY</span>
-                                </h4>
-                                <p class="mt-4 text-gray-400 max-w-xl leading-relaxed font-light">
-                                    A content-first digital illustration portfolio. Custom vanilla JS lightbox system and responsive CSS Grid engine.
-                                </p>
-                            </div>
-                            <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#ff00ff] group-hover:text-black transition-all duration-500">
+                <a href="chloeart.html" class="reveal glass chloe-card block p-8 md:p-12 rounded-[2.5rem] group relative overflow-hidden" style="animation-delay: 0.7s;">
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                        <div>
+                            <div class="mono text-[10px] text-[#ff00ff] uppercase tracking-[0.4em] mb-4">// Visual Archive</div>
+                            <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#ff00ff] transition-colors">
+                                CHLOE'S <span class="opacity-50">GALLERY</span>
+                            </h4>
+                            <p class="mt-4 text-gray-400 max-w-xl text-sm md:text-base leading-relaxed">
+                                A content-first digital illustration portfolio. Custom vanilla JS lightbox system and responsive CSS Grid engine.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="w-12 h-12 rounded-full border border-[#ff00ff]/30 flex items-center justify-center group-hover:bg-[#ff00ff] group-hover:text-black transition-all">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                             </div>
+                            <span class="mono text-[9px] text-gray-600 mt-4 uppercase tracking-widest">Analysis</span>
                         </div>
+                    </div>
+                    <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <span class="mono text-8xl font-bold">V1</span>
                     </div>
                 </a>
 
-                <!-- Truck System -->
-                <a href="telemetry.html" class="group block">
-                    <div class="project-card truck-border p-8 md:p-12 rounded-[3rem] relative overflow-hidden">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
-                            <div>
-                                <div class="mono text-[10px] text-[#ff9d00] uppercase tracking-[0.4em] mb-4">// Desktop Utility</div>
-                                <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#ff9d00] transition-colors">
-                                    TRUCK <span class="opacity-30">SYSTEM</span>
-                                </h4>
-                                <p class="mt-4 text-gray-400 max-w-xl leading-relaxed font-light">
-                                    Low-latency Rust backend communicating via Win32 Shared Memory to a Vue 3 HUD.
-                                </p>
-                            </div>
-                            <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#ff9d00] group-hover:text-black transition-all duration-500">
+                <a href="telemetry.html" class="reveal glass telemetry-card block p-8 md:p-12 rounded-[2.5rem] group relative overflow-hidden" style="animation-delay: 0.8s;">
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                        <div>
+                            <div class="mono text-[10px] text-[#ff9d00] uppercase tracking-[0.4em] mb-4">// Desktop Utility</div>
+                            <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#ff9d00] transition-colors">
+                                TRUCK <span class="opacity-50">SYSTERM</span>
+                            </h4>
+                            <p class="mt-4 text-gray-400 max-w-xl text-sm md:text-base leading-relaxed">
+                                Low-latency Rust backend communicating via Win32 Shared Memory to a Vue 3 HUD. Solving OS integrity level challenges for elevated processes.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="w-12 h-12 rounded-full border border-[#ff9d00]/30 flex items-center justify-center group-hover:bg-[#ff9d00] group-hover:text-black transition-all">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                             </div>
+                            <span class="mono text-[9px] text-gray-600 mt-4 uppercase tracking-widest">Analysis</span>
                         </div>
                     </div>
+                    <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <span class="mono text-8xl font-bold">HUD</span>
+                    </div>
                 </a>
+
+                <div class="reveal glass border-dashed border-2 border-white/5 p-16 rounded-[2.5rem] text-center group cursor-wait" style="animation-delay: 0.9s;">
+                    <p class="mono text-gray-600 uppercase tracking-widest text-xs">More Deployments Pending...</p>
+                </div>
             </div>
-        </section>
-    </main>
+        </main>
 
-    <footer class="max-w-6xl mx-auto px-6 py-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 reveal">
-        <p class="mono text-gray-500 tracking-[0.3em] uppercase text-[9px]">&copy; 2026 DAMION THOMASSON // BUILDING THE FUTURE</p>
-        <div class="flex gap-8 mono text-[10px] uppercase tracking-widest text-gray-400">
-            <a href="#" class="hover:text-white transition-colors">GitHub</a>
-            <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
-        </div>
-    </footer>
+        <footer class="max-w-6xl mx-auto px-6 py-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+            <p class="mono text-gray-500 font-medium tracking-[0.3em] uppercase text-[9px]">&copy; 2026 DAMION THOMASSON // LEARNING & BUILDING</p>
+            <div class="flex gap-8 mono text-[9px] uppercase tracking-widest text-gray-400">
+                <a href="" target="_blank" class="hover:text-white transition-colors">GitHub</a>
+            </div>
+        </footer>
+    </div>
 
     <script>
         const dot = document.getElementById('cursor-dot');
         const glow = document.getElementById('cursor-glow');
         
-        let mouseX = 0, mouseY = 0;
-        let dotX = 0, dotY = 0;
-
         document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            glow.style.left = mouseX + 'px';
-            glow.style.top = mouseY + 'px';
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
+            }, 50);
         });
 
-        function animate() {
-            let distX = mouseX - dotX;
-            let distY = mouseY - dotY;
-            dotX = dotX + (distX * 0.15);
-            dotY = dotY + (distY * 0.15);
-            dot.style.left = dotX + 'px';
-            dot.style.top = dotY + 'px';
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // Hover Effect
-        document.querySelectorAll('a').forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                dot.style.transform = 'scale(4)';
-                dot.style.background = 'var(--accent)';
-            });
-            link.addEventListener('mouseleave', () => {
-                dot.style.transform = 'scale(1)';
-                dot.style.background = '#fff';
-            });
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress").style.width = scrolled + "%";
         });
     </script>
 </body>
