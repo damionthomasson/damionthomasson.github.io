@@ -9,7 +9,6 @@
     <style>
         :root {
             --accent: #d1ff00;
-            --purple: #7e22ce;
             --rush-cyan: #00f3ff;
             --rush-fuchsia: #ff00ff;
             --truck-amber: #ff9d00;
@@ -36,57 +35,48 @@
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .glass:hover { 
-            background: rgba(20, 20, 20, 0.6);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-5px) scale(1.01);
+        .project-card {
+            background: #0a0a0a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
+        /* Dynamic Project Hover States */
+        .group:hover .beatrush-border { border-color: var(--rush-cyan); box-shadow: 0 0 30px rgba(0, 243, 255, 0.1); }
+        .group:hover .chloe-border { border-color: var(--rush-fuchsia); box-shadow: 0 0 30px rgba(255, 0, 255, 0.1); }
+        .group:hover .truck-border { border-color: var(--truck-amber); box-shadow: 0 0 30px rgba(255, 157, 0, 0.1); }
 
         .bg-mesh {
             position: fixed; inset: 0; z-index: -1;
             background-color: #050505;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(126, 34, 206, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(209, 255, 0, 0.08) 0px, transparent 50%),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+                radial-gradient(at 0% 0%, rgba(126, 34, 206, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(209, 255, 0, 0.06) 0px, transparent 50%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
         }
 
         #cursor-dot {
             position: fixed; width: 6px; height: 6px; background: #fff; border-radius: 50%;
-            pointer-events: none; z-index: 9999; transition: transform 0.1s;
-            display: none;
+            pointer-events: none; z-index: 9999; display: none;
         }
         #cursor-glow {
-            position: fixed; width: 350px; height: 350px; 
-            background: radial-gradient(circle, rgba(209, 255, 0, 0.08) 0%, transparent 70%);
+            position: fixed; width: 400px; height: 400px; 
+            background: radial-gradient(circle, rgba(209, 255, 0, 0.07) 0%, transparent 70%);
             pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
             display: none;
         }
-        @media (min-width: 1024px) {
-            #cursor-dot, #cursor-glow { display: block; }
-        }
+        @media (min-width: 1024px) { #cursor-dot, #cursor-glow { display: block; } }
 
         .outline-text {
             color: transparent;
             -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-            transition: -webkit-text-stroke 0.5s;
         }
 
-        .outline-text:hover {
-            -webkit-text-stroke: 1px rgba(209, 255, 0, 0.5);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .hero-title {
-            font-size: clamp(3.5rem, 12vw, 10rem);
-            line-height: 0.85;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        .float-anim { animation: float 6s ease-in-out infinite; }
+        .reveal { animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
 <body class="antialiased selection:bg-[#d1ff00]/30">
@@ -96,40 +86,37 @@
     <div class="bg-mesh"></div>
 
     <nav class="fixed top-0 w-full z-50 px-4 py-6">
-        <div class="max-w-6xl mx-auto flex justify-between items-center glass rounded-2xl px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center glass rounded-2xl px-6 py-3">
             <span class="text-white font-extrabold tracking-tighter text-2xl">DT<span class="text-[#d1ff00]">.</span></span>
-            <div class="flex items-center space-x-6 md:space-x-10 text-[10px] uppercase tracking-[0.2em] font-bold">
+            <div class="flex items-center space-x-8 text-[10px] uppercase tracking-[0.2em] font-bold">
                 <a href="#work" class="hover:text-[#d1ff00] transition-colors">Projects</a>
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=damionthomasson@gmail.com" target="_blank" 
-                   class="bg-white text-black px-6 py-3 rounded-full hover:bg-[#d1ff00] hover:scale-105 active:scale-95 transition-all">
-                    Contact
-                </a>
+                   class="bg-white text-black px-5 py-2.5 rounded-xl hover:bg-[#d1ff00] transition-all">Contact</a>
             </div>
         </div>
     </nav>
 
-    <header class="relative pt-64 pb-32 px-6">
-        <div class="max-w-6xl mx-auto relative z-10">
-            <div class="mono inline-flex items-center gap-3 px-4 py-2 mb-10 glass rounded-full text-[10px] font-bold tracking-widest text-[#d1ff00] uppercase">
+    <header class="relative pt-52 pb-24 px-6">
+        <div class="max-w-6xl mx-auto reveal">
+            <div class="mono inline-flex items-center gap-3 px-4 py-1.5 mb-8 glass rounded-full text-[10px] font-bold tracking-widest text-[#d1ff00] uppercase">
                 <span class="relative flex h-2 w-2">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d1ff00] opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-[#d1ff00]"></span>
                 </span>
-                Deployment: Month 03 // Active
+                Development Mode // Month 03
             </div>
             
-            <h1 class="hero-title font-extrabold tracking-tighter text-white mb-12 uppercase italic">
+            <h1 class="text-7xl md:text-[9.5rem] font-extrabold tracking-tighter text-white mb-10 leading-[0.85] uppercase italic">
                 DAMION<br>
                 <span class="outline-text">THOMASSON</span>
             </h1>
             
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
-                <p class="text-xl md:text-2xl text-gray-400 max-w-2xl leading-relaxed font-light">
-                    Engineering <span class="text-white font-semibold">robust digital infrastructures</span> and 
-                    immersive user interfaces with a focus on brutalist minimalism.
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+                <p class="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed border-l-2 border-[#d1ff00] pl-6">
+                    A dedicated developer focused on mastering full-stack systems and brutalist UI design. Turning complex logic into fluid digital experiences.
                 </p>
-                <div class="mono text-[10px] text-gray-500 uppercase tracking-[0.3em] bg-white/5 px-4 py-2 rounded-lg border border-white/5">
-                    Loc: London // 51.5074° N
+                <div class="mono text-[10px] text-gray-500 uppercase tracking-widest">
+                    London // 2026 Archive
                 </div>
             </div>
         </div>
@@ -138,97 +125,111 @@
     <main class="max-w-6xl mx-auto px-6 space-y-32 pb-32">
         
         <!-- Experience Bento -->
-        <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div class="md:col-span-7 glass p-10 md:p-16 rounded-[3rem] relative overflow-hidden group">
-                <div class="absolute -right-10 -top-10 w-40 h-40 bg-[#d1ff00]/10 blur-3xl rounded-full group-hover:bg-[#d1ff00]/20 transition-colors"></div>
-                <h2 class="text-4xl font-extrabold text-white mb-8 uppercase tracking-tight leading-none">
-                    Building the<br><span class="text-[#d1ff00]">Foundation</span>
-                </h2>
-                <p class="text-gray-400 text-lg leading-relaxed mb-10 max-w-md">
-                    Mastering the bridge between logic and aesthetics. Focused on performance-driven applications and modular architecture.
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-6 reveal" style="animation-delay: 0.2s;">
+            <div class="md:col-span-8 glass p-12 rounded-[2.5rem] flex flex-col justify-center">
+                <h2 class="text-4xl font-extrabold text-white mb-6 uppercase tracking-tight">Growth<br><span class="text-[#d1ff00]">Mindset</span></h2>
+                <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-lg font-light">
+                    Currently diving deep into modern web standards. My goal is to build high-performance applications with a focus on clean, maintainable code and striking visuals.
                 </p>
-                <div class="flex flex-wrap gap-3">
-                    <div class="px-4 py-2 bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white rounded-full">Systems Design</div>
-                    <div class="px-4 py-2 bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white rounded-full">Reactive UI</div>
-                    <div class="px-4 py-2 bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white rounded-full">API Integrity</div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">HTML5 & CSS3</span>
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Modern JS</span>
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Rust</span>
                 </div>
             </div>
 
-            <div class="md:col-span-5 glass p-10 rounded-[3rem] bg-gradient-to-br from-purple-900/20 to-transparent flex flex-col justify-between border-purple-500/20">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <div class="text-7xl font-extrabold text-white mb-1 tracking-tighter">03</div>
-                        <div class="mono text-[#d1ff00] font-bold uppercase tracking-widest text-[10px]">Months Deep</div>
-                    </div>
-                    <div class="p-3 bg-white/10 rounded-2xl float-anim">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    </div>
+            <div class="md:col-span-4 glass p-8 rounded-[2.5rem] bg-gradient-to-br from-purple-900/10 to-transparent flex flex-col justify-between">
+                <div>
+                    <div class="text-6xl font-extrabold text-white mb-1 tracking-tighter">03</div>
+                    <div class="mono text-[#d1ff00] font-bold uppercase tracking-widest text-[10px]">Months of Code</div>
                 </div>
-                <div class="space-y-4">
-                    <div class="flex justify-between text-[10px] mono uppercase tracking-widest text-gray-500">
-                        <span>Current Stack</span>
-                        <span class="text-white">Active</span>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-xs mono bg-white/5 px-3 py-1 rounded">Rust</span>
-                        <span class="text-xs mono bg-white/5 px-3 py-1 rounded">Vue.js</span>
-                        <span class="text-xs mono bg-white/5 px-3 py-1 rounded">Tailwind</span>
-                        <span class="text-xs mono bg-white/5 px-3 py-1 rounded">Laravel</span>
+                <div class="mt-12 space-y-4">
+                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Tech Stack:</div>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="text-white text-xs mono opacity-80">Tailwind</span>
+                        <span class="text-white text-xs mono opacity-80">Vue.js</span>
+                        <span class="text-white text-xs mono opacity-80">Laravel</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Project List -->
-        <section id="work" class="space-y-8">
-            <div class="flex justify-between items-end border-b border-white/10 pb-8">
-                <div>
-                    <h3 class="text-3xl font-black text-white uppercase tracking-tighter italic">Featured Projects</h3>
-                    <p class="text-gray-500 mono text-[10px] mt-2 uppercase tracking-[0.2em]">Selected works // 2026 Archive</p>
-                </div>
+        <!-- Project Grid -->
+        <section id="work" class="space-y-12 reveal" style="animation-delay: 0.4s;">
+            <div class="flex justify-between items-end border-b border-white/10 pb-6">
+                <h3 class="text-2xl font-bold text-white uppercase tracking-widest italic">Active Deployments</h3>
+                <span class="mono text-[10px] text-gray-500">V8_STATUS: STABLE</span>
             </div>
 
-            <!-- Project Card 1 -->
-            <a href="beatrush.html" class="glass group block p-1 md:p-2 rounded-[2.5rem] hover:border-[#00f3ff]/50">
-                <div class="p-8 md:p-12 rounded-[2rem] bg-[#0a0a0a] flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative overflow-hidden">
-                    <div class="relative z-10">
-                        <div class="mono text-[10px] text-[#00f3ff] uppercase tracking-[0.4em] mb-6">// System Engine</div>
-                        <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
-                            BEATRUSH <span class="opacity-20 outline-text group-hover:opacity-100 transition-opacity">V8_CORE</span>
-                        </h4>
-                        <p class="mt-6 text-gray-400 max-w-xl text-base leading-relaxed">
-                            Brutalist broadcast terminal built with <span class="text-white">Laravel & Inertia.js</span>. Features real-time track metadata and zero-latency UI.
-                        </p>
-                    </div>
-                    <div class="relative z-10 h-full flex flex-col items-end justify-center">
-                        <div class="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#00f3ff] group-hover:border-transparent group-hover:text-black transition-all duration-500">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            <div class="grid grid-cols-1 gap-8">
+                <!-- Beatrush -->
+                <a href="beatrush.html" class="group block">
+                    <div class="project-card beatrush-border p-8 md:p-12 rounded-[3rem] relative overflow-hidden">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
+                            <div>
+                                <div class="mono text-[10px] text-[#00f3ff] uppercase tracking-[0.4em] mb-4">// System Engine</div>
+                                <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#00f3ff] transition-colors">
+                                    BEATRUSH <span class="opacity-30">V8_CORE</span>
+                                </h4>
+                                <p class="mt-4 text-gray-400 max-w-xl leading-relaxed font-light">
+                                    A brutalist broadcast terminal built with Laravel & Inertia.js. Real-time track metadata and zero-latency UI.
+                                </p>
+                            </div>
+                            <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#00f3ff] group-hover:text-black transition-all duration-500">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            <!-- More projects can follow this pattern -->
-            <div class="glass border-dashed border-2 border-white/5 p-20 rounded-[3rem] text-center group cursor-wait">
-                <div class="mono text-gray-600 uppercase tracking-[0.5em] text-xs">New Intel Incoming...</div>
+                <!-- Chloe's Gallery -->
+                <a href="chloeart.html" class="group block">
+                    <div class="project-card chloe-border p-8 md:p-12 rounded-[3rem] relative overflow-hidden">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
+                            <div>
+                                <div class="mono text-[10px] text-[#ff00ff] uppercase tracking-[0.4em] mb-4">// Visual Archive</div>
+                                <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#ff00ff] transition-colors">
+                                    CHLOE'S <span class="opacity-30">GALLERY</span>
+                                </h4>
+                                <p class="mt-4 text-gray-400 max-w-xl leading-relaxed font-light">
+                                    A content-first digital illustration portfolio. Custom vanilla JS lightbox system and responsive CSS Grid engine.
+                                </p>
+                            </div>
+                            <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#ff00ff] group-hover:text-black transition-all duration-500">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Truck System -->
+                <a href="telemetry.html" class="group block">
+                    <div class="project-card truck-border p-8 md:p-12 rounded-[3rem] relative overflow-hidden">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
+                            <div>
+                                <div class="mono text-[10px] text-[#ff9d00] uppercase tracking-[0.4em] mb-4">// Desktop Utility</div>
+                                <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#ff9d00] transition-colors">
+                                    TRUCK <span class="opacity-30">SYSTEM</span>
+                                </h4>
+                                <p class="mt-4 text-gray-400 max-w-xl leading-relaxed font-light">
+                                    Low-latency Rust backend communicating via Win32 Shared Memory to a Vue 3 HUD.
+                                </p>
+                            </div>
+                            <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#ff9d00] group-hover:text-black transition-all duration-500">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
         </section>
     </main>
 
-    <footer class="max-w-6xl mx-auto px-6 py-24 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-12">
-        <div class="flex flex-col items-center md:items-start gap-4">
-            <span class="text-2xl font-bold text-white italic tracking-tighter">DAMION THOMASSON</span>
-            <p class="mono text-gray-600 tracking-[0.3em] uppercase text-[9px]">&copy; 2026 // ALL SYSTEMS OPERATIONAL</p>
-        </div>
-        <div class="flex gap-12 mono text-[10px] uppercase tracking-widest font-bold">
-            <a href="#" class="text-gray-400 hover:text-[#d1ff00] transition-colors relative group">
-                GitHub
-                <span class="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#d1ff00] group-hover:w-full transition-all"></span>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-[#d1ff00] transition-colors relative group">
-                LinkedIn
-                <span class="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#d1ff00] group-hover:w-full transition-all"></span>
-            </a>
+    <footer class="max-w-6xl mx-auto px-6 py-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 reveal">
+        <p class="mono text-gray-500 tracking-[0.3em] uppercase text-[9px]">&copy; 2026 DAMION THOMASSON // BUILDING THE FUTURE</p>
+        <div class="flex gap-8 mono text-[10px] uppercase tracking-widest text-gray-400">
+            <a href="#" class="hover:text-white transition-colors">GitHub</a>
+            <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
         </div>
     </footer>
 
@@ -242,38 +243,30 @@
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-            
-            // Immediate glow position
             glow.style.left = mouseX + 'px';
             glow.style.top = mouseY + 'px';
         });
 
-        // Smooth cursor dot following
         function animate() {
             let distX = mouseX - dotX;
             let distY = mouseY - dotY;
-            
             dotX = dotX + (distX * 0.15);
             dotY = dotY + (distY * 0.15);
-            
             dot.style.left = dotX + 'px';
             dot.style.top = dotY + 'px';
-            
             requestAnimationFrame(animate);
         }
         animate();
 
-        // Add hover effect for links
-        document.querySelectorAll('a, button').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                dot.style.transform = 'translate(-50%, -50%) scale(4)';
+        // Hover Effect
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                dot.style.transform = 'scale(4)';
                 dot.style.background = 'var(--accent)';
-                dot.style.mixBlendMode = 'difference';
             });
-            el.addEventListener('mouseleave', () => {
-                dot.style.transform = 'translate(-50%, -50%) scale(1)';
+            link.addEventListener('mouseleave', () => {
+                dot.style.transform = 'scale(1)';
                 dot.style.background = '#fff';
-                dot.style.mixBlendMode = 'normal';
             });
         });
     </script>
