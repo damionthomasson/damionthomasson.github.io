@@ -13,6 +13,7 @@
             --rush-cyan: #00f3ff;
             --rush-fuchsia: #ff00ff;
             --truck-amber: #ff9d00;
+            --discord-blurple: #5865f2;
         }
         
         @media (min-width: 1024px) {
@@ -58,6 +59,11 @@
         .telemetry-card:hover {
             border-color: var(--truck-amber);
             box-shadow: 0 0 30px rgba(255, 157, 0, 0.15);
+        }
+
+        .discord-card:hover {
+            border-color: var(--discord-blurple);
+            box-shadow: 0 0 30px rgba(88, 101, 242, 0.15);
         }
 
         .bg-mesh {
@@ -139,7 +145,7 @@
                 
                 <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end gap-8" style="animation-delay: 0.2s;">
                     <p class="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed border-l-2 border-[#d1ff00] pl-6">
-                        A dedicated developer focused on mastering full-stack systems and clean UI design. Turning complex logic into fluid digital experiences.
+                        A dedicated developer focused on mastering full-stack systems, secure automation, and clean UI design. Turning complex logic into fluid digital experiences.
                     </p>
                     <div class="mono text-[10px] text-gray-500 uppercase tracking-widest">
                         London / Learning Mode: Active
@@ -153,12 +159,13 @@
                 <div class="reveal md:col-span-8 glass p-12 rounded-[2.5rem] flex flex-col justify-center relative overflow-hidden group" style="animation-delay: 0.3s;">
                     <h2 class="text-4xl font-extrabold text-white mb-6 uppercase tracking-tight">Growth<br><span class="text-[#d1ff00]">Mindset</span></h2>
                     <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-lg">
-                        Currently diving deep into modern web standards and responsive design. My goal is to build high-performance applications with a focus on clean, maintainable code.
+                        Currently diving deep into modern web standards, hardware-level endpoints, and asynchronous event loops. My goal is to build high-performance applications with a focus on clean, maintainable code.
                     </p>
                     <div class="flex flex-wrap gap-2">
                         <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">HTML5 & CSS3</span>
                         <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Modern JavaScript</span>
                         <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Responsive UI</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white rounded-md">Bot Architectures</span>
                     </div>
                 </div>
 
@@ -174,6 +181,7 @@
                             <span class="text-white text-xs mono opacity-80">JavaScript</span>
                             <span class="text-white text-xs mono opacity-80">Vue.js</span>
                             <span class="text-white text-xs mono opacity-80">Rust</span>
+                            <span class="text-white text-xs mono opacity-80">Node.js</span>
                         </div>
                     </div>
                 </div>
@@ -185,6 +193,7 @@
                     <span class="mono text-[10px] text-gray-500">V8_DEPLOYMENTS[]</span>
                 </div>
 
+                <!-- Beatrush Card -->
                 <a href="beatrush.html" class="reveal glass beatrush-card block p-8 md:p-12 rounded-[2.5rem] group relative overflow-hidden" style="animation-delay: 0.6s;">
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                         <div>
@@ -208,6 +217,7 @@
                     </div>
                 </a>
 
+                <!-- Chloe Gallery Card -->
                 <a href="chloeart.html" class="reveal glass chloe-card block p-8 md:p-12 rounded-[2.5rem] group relative overflow-hidden" style="animation-delay: 0.7s;">
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                         <div>
@@ -231,12 +241,13 @@
                     </div>
                 </a>
 
+                <!-- Telemetry HUD Card -->
                 <a href="telemetry.html" class="reveal glass telemetry-card block p-8 md:p-12 rounded-[2.5rem] group relative overflow-hidden" style="animation-delay: 0.8s;">
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                         <div>
                             <div class="mono text-[10px] text-[#ff9d00] uppercase tracking-[0.4em] mb-4">// Desktop Utility</div>
                             <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#ff9d00] transition-colors">
-                                TRUCK <span class="opacity-50">SYSTERM</span>
+                                TRUCK <span class="opacity-50">SYSTEMS</span>
                             </h4>
                             <p class="mt-4 text-gray-400 max-w-xl text-sm md:text-base leading-relaxed">
                                 Low-latency Rust backend communicating via Win32 Shared Memory to a Vue 3 HUD. Solving OS integrity level challenges for elevated processes.
@@ -254,8 +265,28 @@
                     </div>
                 </a>
 
-                <div class="reveal glass border-dashed border-2 border-white/5 p-16 rounded-[2.5rem] text-center group cursor-wait" style="animation-delay: 0.9s;">
-                    <p class="mono text-gray-600 uppercase tracking-widest text-xs">More Deployments Pending...</p>
+                <!-- Discord Bot Infrastructure Card -->
+                <div class="reveal glass discord-card block p-8 md:p-12 rounded-[2.5rem] group relative overflow-hidden" style="animation-delay: 0.9s;">
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                        <div>
+                            <div class="mono text-[10px] text-[#5865f2] uppercase tracking-[0.4em] mb-4">// Event-Driven Daemon</div>
+                            <h4 class="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter group-hover:text-[#5865f2] transition-colors">
+                                DISCORD <span class="opacity-50">BOT_ENGINES</span>
+                            </h4>
+                            <p class="mt-4 text-gray-400 max-w-xl text-sm md:text-base leading-relaxed">
+                                Custom community tooling engineered for persistent real-time streaming connections. Implementing secure multi-guild scope management, asynchronous event handlers, and data-forwarding webhooks.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="w-12 h-12 rounded-full border border-[#5865f2]/30 flex items-center justify-center group-hover:bg-[#5865f2] group-hover:text-black transition-all">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            </div>
+                            <span class="mono text-[9px] text-gray-600 mt-4 uppercase tracking-widest">Active System</span>
+                        </div>
+                    </div>
+                    <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <span class="mono text-8xl font-bold">BOT</span>
+                    </div>
                 </div>
             </div>
         </main>
@@ -263,7 +294,7 @@
         <footer class="max-w-6xl mx-auto px-6 py-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
             <p class="mono text-gray-500 font-medium tracking-[0.3em] uppercase text-[9px]">&copy; 2026 DAMION THOMASSON // LEARNING & BUILDING</p>
             <div class="flex gap-8 mono text-[9px] uppercase tracking-widest text-gray-400">
-                <a href="" target="_blank" class="hover:text-white transition-colors">GitHub</a>
+                <a href="https://github.com/MiselTwister" target="_blank" class="hover:text-white transition-colors">GitHub</a>
             </div>
         </footer>
     </div>
