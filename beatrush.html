@@ -3,195 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BEATRUSH // V8_CORE - Terminal</title>
+    <title>Beatrush — Case Study | Damion Thomasson</title>
+    <meta name="description" content="A broadcast-style radio terminal that turns live track data into a reactive, real-time visual experience.">
+    <meta name="author" content="Damion Thomasson">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Beatrush — Case Study | Damion Thomasson">
+    <meta property="og:description" content="A broadcast-style radio terminal that turns live track data into a reactive, real-time visual experience.">
+    <meta property="og:url" content="https://damionthomasson.github.io/beatrush.html">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='28' fill='%23fff'%3EDT%3C/text%3E%3Ccircle cx='50' cy='44' r='4' fill='%23d1ff00'/%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --rush-cyan: #00f3ff;
-            --rush-pink: #ff0055;
-            --bg-dark: #050505;
-            --panel-bg: rgba(10, 10, 10, 0.9);
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            font-family: 'JetBrains Mono', monospace;
-            color: #d1d5db;
-            overflow-x: hidden;
-        }
-
-        /* Animated Grid Background */
-        .grid-bg {
-            position: fixed;
-            inset: 0;
-            background-image: 
-                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -1;
-            mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
-        }
-
-        /* CRT Scanline Effect Overlay */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        .terminal-panel {
-            background: var(--panel-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            backdrop-filter: blur(10px);
-        }
-
-        /* HUD Brackets */
-        .terminal-panel::before, .terminal-panel::after {
-            content: "";
-            position: absolute;
-            width: 10px; height: 10px;
-            border-color: var(--rush-cyan);
-            border-style: solid;
-            pointer-events: none;
-        }
-        .terminal-panel::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-        .terminal-panel::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
-
-        .glow-text { text-shadow: 0 0 15px var(--rush-cyan); color: var(--rush-cyan); }
-        .pink-accent { color: var(--rush-pink); }
-
-        .stat-card {
-            border-left: 2px solid var(--rush-cyan);
-            background: linear-gradient(90deg, rgba(0, 243, 255, 0.05), transparent);
-        }
-
-        @keyframes scanline {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(100%); }
-        }
-        .scanner {
-            position: absolute;
-            width: 100%; height: 2px;
-            background: var(--rush-cyan);
-            opacity: 0.2;
-            animation: scanline 4s linear infinite;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/site.css">
 </head>
-<body class="p-4 md:p-8">
-    <div class="grid-bg"></div>
+<body class="selection:bg-[#d1ff00]/30 selection:text-white" style="--project: #00d8e6;">
+    <div class="bg-glow"></div>
 
-    <header class="max-w-7xl mx-auto flex flex-wrap justify-between items-end mb-12 gap-4">
-        <div>
-            <div class="flex items-center gap-3 mb-2">
-                <a href="index.html" class="text-[10px] bg-white/5 border border-white/10 px-4 py-1 hover:bg-white hover:text-black transition-all">TERMINATE_SESSION</a>
-                <span class="text-[10px] text-white/40 tracking-[0.3em]">LOC: 51.5074° N, 0.1278° W</span>
+    <a href="#content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] bg-white text-black px-4 py-2 rounded-lg">Skip to content</a>
+
+    <!-- Navigation -->
+    <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-md">
+        <nav class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between" aria-label="Main">
+            <a href="index.html" class="text-white font-extrabold tracking-tight text-xl">DT<span class="text-[#d1ff00]">.</span></a>
+            <div class="flex items-center gap-6 sm:gap-8 text-sm font-medium">
+                <a href="index.html#work" class="hover:text-white transition-colors">Work</a>
+                <a href="index.html#about" class="hover:text-white transition-colors">About</a>
+                <a href="index.html#contact" class="hidden sm:inline bg-white text-black px-4 py-2 rounded-lg hover:bg-[#d1ff00] transition-colors">Get in touch</a>
             </div>
-            <h2 class="text-xs font-bold tracking-[0.5em] uppercase text-white/60">Broadcast Node // <span class="glow-text">V8_CORE</span></h2>
-        </div>
-        <div class="text-[10px] text-right border-r-2 border-cyan-500 pr-4">
-            <div class="text-white opacity-50 uppercase">Network Health</div>
-            <div class="glow-text font-bold">STABLE // 99.8% UPTIME</div>
-        </div>
+        </nav>
     </header>
 
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <div class="lg:col-span-8 space-y-6">
-            <div class="terminal-panel overflow-hidden">
-                <div class="scanner"></div>
-                <div class="p-1">
-                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200" 
-                         alt="Main Visual" 
-                         class="w-full grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-1000">
-                </div>
-                <div class="absolute bottom-4 left-4 bg-black/80 px-4 py-2 border border-white/10">
-                    <span class="text-[10px] text-cyan-400 font-bold tracking-widest uppercase">Live View: Primary_Display</span>
-                </div>
-            </div>
-            
-            <div class="py-6">
-                <h1 class="text-6xl md:text-9xl font-black text-white italic tracking-tighter uppercase leading-none mb-6">
-                    BEAT<span class="text-transparent" style="-webkit-text-stroke: 1px white;">RUSH</span><br>
-                    <span class="glow-text">V8.0</span>
-                </h1>
-                <p class="text-lg md:text-xl text-gray-400 max-w-2xl border-l-2 border-white/20 pl-6 leading-relaxed">
-                    A high-performance broadcast engine built for the underground. Integrating <span class="text-white">Inertia.js</span> with <span class="text-white">Vue 3</span>, V8_CORE transforms raw audio data into a reactive visual experience. 
-                </p>
-            </div>
-        </div>
+    <main id="content">
+        <!-- Intro -->
+        <section class="max-w-5xl mx-auto px-6 pt-36 pb-16 md:pt-44">
+            <a href="index.html#work" class="reveal inline-flex items-center gap-2 text-sm hover:text-white transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg> All work
+            </a>
+            <p class="reveal mono text-xs uppercase tracking-wider text-project mb-4">Case study &middot; Web application</p>
+            <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.05] mb-6" style="animation-delay:.05s">Beatrush</h1>
+            <p class="reveal text-xl md:text-2xl text-neutral-300 max-w-3xl leading-relaxed" style="animation-delay:.1s">A broadcast-style radio terminal that turns live track data into a reactive, real-time visual experience.</p>
 
-        <div class="lg:col-span-4 space-y-4">
-            <div class="terminal-panel p-6">
-                <h3 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.4em] mb-6 flex justify-between">
-                    System Core <span>[01]</span>
-                </h3>
-                <div class="space-y-6">
-                    <div class="stat-card p-4">
-                        <div class="text-[9px] uppercase opacity-50 mb-1">Stack Environment</div>
-                        <div class="text-white text-sm font-bold">LARAVEL + INERTIA.JS</div>
-                    </div>
-                    <div class="stat-card p-4">
-                        <div class="text-[9px] uppercase opacity-50 mb-1">State Management</div>
-                        <div class="text-white text-sm font-bold">VUE 3 REACTION ENGINE</div>
-                    </div>
-                    <div class="stat-card p-4">
-                        <div class="text-[9px] uppercase opacity-50 mb-1">Sync Protocol</div>
-                        <div class="text-white text-sm font-bold">POCKETBASE / REALTIME</div>
-                    </div>
+            <dl class="reveal grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 pt-8 border-t border-white/10" style="animation-delay:.15s">
+                <div>
+                    <dt class="mono text-xs uppercase tracking-wider text-neutral-500 mb-1">Role</dt>
+                    <dd class="text-white">Design &amp; full-stack development</dd>
+                </div>
+                <div>
+                    <dt class="mono text-xs uppercase tracking-wider text-neutral-500 mb-1">Type</dt>
+                    <dd class="text-white">Web application</dd>
+                </div>
+                <div>
+                    <dt class="mono text-xs uppercase tracking-wider text-neutral-500 mb-1">Stack</dt>
+                    <dd class="text-white">Laravel, Inertia.js, Vue 3</dd>
+                </div>
+                <div>
+                    <dt class="mono text-xs uppercase tracking-wider text-neutral-500 mb-1">Year</dt>
+                    <dd class="text-white">2026</dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- Overview -->
+        <section class="max-w-5xl mx-auto px-6 pb-20">
+            <div class="border-b border-white/10 pb-4 mb-8">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Overview</h2>
+            </div>
+            <div class="prose-cs max-w-3xl"><p>Beatrush is a broadcast interface for an online radio station, bringing gaming-inspired visuals together with the reliability expected of a live broadcast.</p><p>Built with <strong>Laravel</strong> and <strong>Inertia.js</strong> on a <strong>Vue 3</strong> front-end, it keeps track metadata, listener profiles and the interface itself in sync in real time &mdash; without full page reloads.</p></div>
+        </section>
+
+        <!-- Features -->
+        <section class="max-w-5xl mx-auto px-6 pb-20">
+            <div class="border-b border-white/10 pb-4 mb-8">
+                <h2 class="text-2xl font-bold text-white tracking-tight">What I built</h2>
+            </div>
+            <div class="grid gap-5 md:grid-cols-3">
+                <div class="card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2">Live track metadata</h3>
+                    <p class="leading-relaxed">High-frequency track polling with server-side throttling keeps now-playing information current without overloading the API.</p>
+                </div>
+                <div class="card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2">Seamless profile loading</h3>
+                    <p class="leading-relaxed">Listener profiles load asynchronously via Inertia.js, so navigation never resets the page or interrupts playback.</p>
+                </div>
+                <div class="card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2">Reactive visuals</h3>
+                    <p class="leading-relaxed">Interface brightness and colour palette respond to the BPM and energy of the current track.</p>
                 </div>
             </div>
+        </section>
 
-            <div class="terminal-panel p-6 border-pink-500/20">
-                <h3 class="text-[10px] font-bold text-pink-500 uppercase tracking-[0.4em] mb-6 flex justify-between">
-                    Sub-Modules <span>[02]</span>
-                </h3>
-                <div class="grid gap-4">
-                    <div class="group border border-white/5 p-3 hover:bg-pink-500/5 transition-colors">
-                        <span class="text-[10px] pink-accent block mb-1">SIGNAL_INJECTOR</span>
-                        <p class="text-[11px] opacity-60">High-speed track polling via server-side throttle.</p>
-                    </div>
-                    <div class="group border border-white/5 p-3 hover:bg-pink-500/5 transition-colors">
-                        <span class="text-[10px] pink-accent block mb-1">KINETIC_ARCHIVE</span>
-                        <p class="text-[11px] opacity-60">Asynchronous profile loading without page resets.</p>
-                    </div>
+        <!-- Highlights -->
+        <section class="max-w-5xl mx-auto px-6 pb-20">
+            <div class="border-b border-white/10 pb-4 mb-8">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Highlights</h2>
+            </div>
+            <div class="grid gap-5 md:grid-cols-3">
+                <div class="card rounded-2xl p-6">
+                    <div class="mono text-xs uppercase tracking-wider text-project mb-2">Performance</div>
+                    <p class="leading-relaxed">State updates are reflected in under 50&nbsp;ms, so listener interactions feel instant.</p>
+                </div>
+                <div class="card rounded-2xl p-6">
+                    <div class="mono text-xs uppercase tracking-wider text-project mb-2">Real-time sync</div>
+                    <p class="leading-relaxed">PocketBase real-time subscriptions push changes to every connected client.</p>
+                </div>
+                <div class="card rounded-2xl p-6">
+                    <div class="mono text-xs uppercase tracking-wider text-project mb-2">Integration</div>
+                    <p class="leading-relaxed">Custom API integration connects the station&#39;s broadcast data to the UI.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="lg:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            <div class="terminal-panel p-8 group hover:border-cyan-500/50 transition-all">
-                <div class="text-cyan-500 text-3xl font-black mb-4 group-hover:scale-110 origin-left transition-transform">01.</div>
-                <h4 class="text-white font-bold uppercase text-xs tracking-widest mb-2">The Mission</h4>
-                <p class="text-[11px] leading-relaxed opacity-50">Merging gaming culture with high-fidelity broadcast standards through custom API integration.</p>
+        <!-- Stack -->
+        <section class="max-w-5xl mx-auto px-6 pb-24">
+            <div class="border-b border-white/10 pb-4 mb-8">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Tech stack</h2>
             </div>
-            <div class="terminal-panel p-8 group hover:border-cyan-500/50 transition-all">
-                <div class="text-cyan-500 text-3xl font-black mb-4 group-hover:scale-110 origin-left transition-transform">02.</div>
-                <h4 class="text-white font-bold uppercase text-xs tracking-widest mb-2">Zero Latency</h4>
-                <p class="text-[11px] leading-relaxed opacity-50">State updates occur in < 50ms, ensuring listener interactions are reflected instantly.</p>
-            </div>
-            <div class="terminal-panel p-8 group hover:border-cyan-500/50 transition-all">
-                <div class="text-cyan-500 text-3xl font-black mb-4 group-hover:scale-110 origin-left transition-transform">03.</div>
-                <h4 class="text-white font-bold uppercase text-xs tracking-widest mb-2">Automated UI</h4>
-                <p class="text-[11px] leading-relaxed opacity-50">Interface brightness and color palettes react to the BPM and energy of the current track.</p>
-            </div>
-        </div>
+            <div class="flex flex-wrap gap-2"><span class="tag">Laravel</span><span class="tag">PHP</span><span class="tag">Inertia.js</span><span class="tag">Vue 3</span><span class="tag">PocketBase</span><span class="tag">JavaScript</span></div>
+        </section>
+
+        <!-- Next project -->
+        <section class="max-w-5xl mx-auto px-6 pb-24">
+            <a href="chloeart.html" class="card group rounded-2xl p-8 flex items-center justify-between gap-6">
+                <div>
+                    <div class="mono text-xs uppercase tracking-wider text-neutral-500 mb-2">Next project &middot; Portfolio site</div>
+                    <div class="text-2xl md:text-3xl font-bold text-white tracking-tight">Chloe's Art</div>
+                </div>
+                <span class="arrow text-neutral-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></span>
+            </a>
+        </section>
     </main>
 
-    <footer class="max-w-7xl mx-auto mt-24 py-12 border-t border-white/5 flex flex-wrap justify-between items-center gap-8">
-        <div>
-            <div class="text-[9px] tracking-[0.8em] text-white/30 uppercase">Authorized Access Only</div>
-            <div class="text-[10px] text-white/60">SYSTEM BUILD: 2026.04.V8</div>
+    <footer class="border-t border-white/5">
+        <div class="max-w-5xl mx-auto px-6 py-10 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-neutral-500">
+            <p>&copy; <span id="year">2026</span> Damion Thomasson</p>
+            <div class="flex gap-6">
+                <a href="https://github.com/damionthomasson" target="_blank" rel="noopener" class="hover:text-white transition-colors">GitHub</a>
+                <a href="mailto:damionthomasson@gmail.com" class="hover:text-white transition-colors">Email</a>
+            </div>
         </div>
-        
-        <a href="#" class="px-10 py-4 bg-cyan-500 text-black font-black text-xs uppercase tracking-[0.2em] hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all">
-            Initialize_Deployment
-        </a>
     </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

@@ -1,0 +1,70 @@
+:root {
+    --accent: #d1ff00;
+    --project: var(--accent);
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --border: rgba(255, 255, 255, 0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: #a3a3a3;
+    -webkit-font-smoothing: antialiased;
+}
+
+.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+.bg-glow {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+        radial-gradient(60rem 40rem at 10% -10%, rgba(126, 34, 206, 0.10), transparent 60%),
+        radial-gradient(50rem 30rem at 110% 10%, rgba(209, 255, 0, 0.04), transparent 60%);
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: border-color .25s ease, transform .25s ease, background-color .25s ease;
+}
+a.card:hover, a.card:focus-visible {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: #141414;
+    transform: translateY(-2px);
+}
+a.card:hover .arrow, a.card:focus-visible .arrow { transform: translateX(4px); color: var(--accent); }
+.arrow { transition: transform .25s ease, color .25s ease; }
+
+.tag {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    color: #d4d4d4;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.text-project { color: var(--project); }
+.border-project { border-color: var(--project); }
+
+/* Case study long-form text */
+.prose-cs p { font-size: 1.0625rem; line-height: 1.75; }
+.prose-cs p + p { margin-top: 1.25rem; }
+.prose-cs strong { color: #fff; font-weight: 600; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+}
+.reveal { opacity: 0; animation: fadeUp .7s ease forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; animation: none; }
+    .card, .arrow { transition: none; }
+}
